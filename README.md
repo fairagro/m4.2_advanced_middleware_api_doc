@@ -20,7 +20,7 @@ There is **exactly one** documentation tree: [`docs/`](docs/).
 
 | Path | Role |
 |------|------|
-| [`docs/index.html`](docs/index.html) | Meeting explainer (Pages entry) |
+| [`docs/index.html`](docs/index.html) | Documentation entry (GitHub Pages) |
 | `docs/*.architecture.json` / `*.sequence.json` | Archify sources |
 | `docs/candidate.archify.md` | Explainer source |
 

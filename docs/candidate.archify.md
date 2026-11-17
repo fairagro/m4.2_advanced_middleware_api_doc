@@ -1,4 +1,4 @@
-# Middleware stores sync in CouchDB and publishes async to Datahub {#middleware-meeting}
+# Middleware stores sync in CouchDB and publishes async to Datahub {#middleware}
 
 The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to CouchDB**, and publishes **asynchronously** to Datahub. The overview shows the store ports [ArcStore](node:overview-arch.arc-store) and [ConsolidatedArcStore](node:overview-arch.consol-store) — without concrete Git implementations.
 
@@ -37,7 +37,7 @@ The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to Couc
 | s-worker | Celery worker | Calls the store ports. | overview-arch | worker |
 | s-arc | ArcStore | Port for per-ARC persistence.[](source:arc-port) | overview-arch | arc-store |
 | s-consol | ConsolidatedArcStore | Port for catalog finalize.[](source:consol-port) | overview-arch | consol-store |
-| s-hub | SearchHUB | Discussion frame only; not wired. | overview-arch | searchhub |
+| s-hub | SearchHUB | External consumer context; not wired here. | overview-arch | searchhub |
 
 @callout id=viewer-tip level=note title="More detail in the diagram"
 | Click a node to open the Semantic Passport (sources, neighbors, deep link). |
@@ -79,9 +79,9 @@ The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to Couc
 | w-consol | ConsolidatedArcStore | Reads an RDI’s ARCs directly from CouchDB, not via BL.[](source:consol-read) | worker-detail-arch | consol |
 | w-doc | DocumentStore | Sync writes events only; finalize reads ARC content.[](source:sync-events) | worker-detail-arch | docstore |
 
-## What should you clarify in the meeting? {#checklist}
+## Configuration checklist {#checklist}
 
 - [ ] Is `consolidated_store` configured (ConsolidatedArcStore active)?
-- [ ] Does SearchHUB need the `{rdi}.json` catalog, the per-ARC repos, or both?
+- [ ] Downstream consumers: `{rdi}.json` catalog, per-ARC repos, or both?
 - [ ] Which RDI IDs and certificate ODIs are the AuthZ source of truth?[](source:authz)
 - [ ] Which failure modes (Git down, catalog unchanged, empty harvest) are acceptable?
