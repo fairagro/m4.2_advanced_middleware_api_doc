@@ -22,7 +22,7 @@ Detail diagrams (full Archify Viewer):
 | API process | https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html |
 | Worker process | https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html |
 
-On the explainer, narrow layouts hide the inline preview — use **Open interactive view** or the links above.
+On the explainer, **Open interactive view** (and node clicks) navigate to these standalone Viewer pages — same behavior locally and on GitHub Pages.
 
 Set the repository Pages source to **GitHub Actions** once (Settings → Pages).
 
@@ -58,6 +58,7 @@ node "$BIN" finalize architecture docs/worker-detail.architecture.json docs/work
   --repo-root "$REPO" --quality showcase
 node "$BIN" finalize explainer docs/candidate.archify.md docs/index.html \
   --repo-root "$REPO" --quality showcase
+node scripts/wire-standalone-viewers.mjs
 ```
 
 ## Prerequisites (Dev Container)
