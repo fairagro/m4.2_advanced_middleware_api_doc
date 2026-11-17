@@ -1,11 +1,17 @@
 # m4.2 Advanced Middleware — Documentation
 
-Interactive architecture documentation (Archify) for
-[`fairagro/m4.2_advanced_middleware_api`][api-repo].
+Interactive architecture documentation (Archify) for the FAIRagro Advanced
+Middleware family:
+
+- [`fairagro/m4.2_advanced_middleware_api`][api-repo]
+- [`fairagro/m4.2_middleware_harvester`][harvester-repo]
+- [`fairagro/m4.2_sql_to_arc`][sql-to-arc-repo]
 
 **License:** [MIT](LICENSE)
 
 [api-repo]: https://github.com/fairagro/m4.2_advanced_middleware_api
+[harvester-repo]: https://github.com/fairagro/m4.2_middleware_harvester
+[sql-to-arc-repo]: https://github.com/fairagro/m4.2_sql_to_arc
 
 ## Live site (GitHub Pages)
 
@@ -14,15 +20,19 @@ Published from [`docs/`](docs/) on every push/merge to `main` via
 
 **<https://fairagro.github.io/m4.2_advanced_middleware_doc/>**
 
-Detail diagrams (full Archify Viewer):
+Hub + detail diagrams (full Archify Viewer):
 
 | Diagram | URL |
 | --- | --- |
-| Explainer | <https://fairagro.github.io/m4.2_advanced_middleware_doc/> |
+| Docs hub (explainer) | <https://fairagro.github.io/m4.2_advanced_middleware_doc/> |
 | System overview | <https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html> |
 | Harvest ingest | <https://fairagro.github.io/m4.2_advanced_middleware_doc/ingest-sequence.html> |
 | API process | <https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html> |
 | Worker process | <https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html> |
+| Harvester overview | <https://fairagro.github.io/m4.2_advanced_middleware_doc/harvester-overview.html> |
+| Harvester pipeline | <https://fairagro.github.io/m4.2_advanced_middleware_doc/harvester-pipeline.html> |
+| SQL-to-ARC overview | <https://fairagro.github.io/m4.2_advanced_middleware_doc/sql-to-arc-overview.html> |
+| SQL-to-ARC data flow | <https://fairagro.github.io/m4.2_advanced_middleware_doc/sql-to-arc-pipeline.html> |
 
 On the explainer, narrow layouts hide the inline preview — use
 **Open interactive view** or the links above.
@@ -51,9 +61,10 @@ There is **exactly one** documentation tree: [`docs/`](docs/).
 
 | Path | Role |
 | --- | --- |
-| [`docs/index.html`](docs/index.html) | Documentation entry (GitHub Pages) |
-| `docs/overview.html` / `api-detail.html` / `worker-detail.html` / `ingest-sequence.html` | Standalone interactive diagrams |
-| `docs/*.architecture.json` / `*.sequence.json` | Archify sources |
+| [`docs/index.html`](docs/index.html) | Docs hub / explainer (GitHub Pages entry) |
+| `docs/overview.html` / `api-detail.html` / `worker-detail.html` / `ingest-sequence.html` | Middleware API standalone diagrams |
+| `docs/harvester-*.html` / `docs/sql-to-arc-*.html` | Harvester and SQL-to-ARC standalone diagrams |
+| `docs/*.architecture.json` / `*.sequence.json` / `*.dataflow.json` | Archify sources |
 | `docs/candidate.archify.md` | Explainer source |
 
 Different snapshots belong on **git branches**, not timestamp folders.
@@ -66,12 +77,14 @@ Sibling checkouts (mounted into the Dev Container):
 | --- | --- | --- |
 | `../m4.2_advanced_middleware_api` | `/workspaces/m4.2_advanced_middleware_api` | Middleware API diagrams + explainer |
 | `../m4.2_middleware_harvester` | `/workspaces/m4.2_middleware_harvester` | Harvester diagrams |
+| `../m4.2_sql_to_arc` | `/workspaces/m4.2_sql_to_arc` | SQL-to-ARC diagrams |
 
 ```bash
 export ARCHIFY_CHROME_NO_SANDBOX=1
 BIN=.agents/skills/archify/bin/archify.mjs
 API=/workspaces/m4.2_advanced_middleware_api
 HARVESTER=/workspaces/m4.2_middleware_harvester
+SQL_TO_ARC=/workspaces/m4.2_sql_to_arc
 
 node "$BIN" finalize architecture docs/overview.architecture.json docs/overview.html \
   --repo-root "$API" --quality showcase
@@ -87,6 +100,10 @@ node "$BIN" finalize architecture docs/harvester-overview.architecture.json docs
   --repo-root "$HARVESTER" --quality showcase
 node "$BIN" finalize dataflow docs/harvester-pipeline.dataflow.json docs/harvester-pipeline.html \
   --repo-root "$HARVESTER" --quality showcase
+node "$BIN" finalize architecture docs/sql-to-arc-overview.architecture.json docs/sql-to-arc-overview.html \
+  --repo-root "$SQL_TO_ARC" --quality showcase
+node "$BIN" finalize dataflow docs/sql-to-arc-pipeline.dataflow.json docs/sql-to-arc-pipeline.html \
+  --repo-root "$SQL_TO_ARC" --quality showcase
 ```
 
 ## Prerequisites (Dev Container)
@@ -95,5 +112,6 @@ node "$BIN" finalize dataflow docs/harvester-pipeline.dataflow.json docs/harvest
 - Sibling checkouts next to this repo (same parent folder):
   - `../m4.2_advanced_middleware_api`
   - `../m4.2_middleware_harvester`
-  (both mounted into the container; see `.devcontainer/devcontainer.json`)
+  - `../m4.2_sql_to_arc`
+  (mounted into the container; see `.devcontainer/devcontainer.json`)
 - In the container: Node.js 22 + Chromium for Archify `finalize`
