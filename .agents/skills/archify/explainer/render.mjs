@@ -55,8 +55,9 @@ export function renderExplainer(document, options = {}) {
     throw Object.assign(new Error(message), {code:diagnostic.code,diagnostics:[diagnostic],archifyDiagnostics:[diagnostic]});
   }
   const nativeLink = (target, text) => {
-    const nativeHash = target.node ? `focus=${encodeURIComponent(target.node)}` : target.route ? `route=${encodeURIComponent(target.route[0])}~${encodeURIComponent(target.route[1])}` : '';
-    return `<a class="diagram-link" href="#${escape(target.diagram)}" data-diagram-link="${escape(target.diagram)}" data-diagram-hash="${escape(nativeHash)}"${target.edges ? ` data-diagram-edges="${escape(JSON.stringify(target.edges))}"` : ''}>${text}<span aria-hidden="true"> ↗</span></a>`;
+    const focusNodes = target.nodes || (target.node ? [target.node] : []);
+    const nativeHash = focusNodes.length === 1 ? `focus=${encodeURIComponent(focusNodes[0])}` : target.route ? `route=${encodeURIComponent(target.route[0])}~${encodeURIComponent(target.route[1])}` : '';
+    return `<a class="diagram-link" href="#${escape(target.diagram)}" data-diagram-link="${escape(target.diagram)}" data-diagram-hash="${escape(nativeHash)}"${focusNodes.length > 1 ? ` data-diagram-nodes="${escape(JSON.stringify(focusNodes))}"` : ''}${target.edges ? ` data-diagram-edges="${escape(JSON.stringify(target.edges))}"` : ''}>${text}<span aria-hidden="true"> ↗</span></a>`;
   };
   function blockHtml(block, panelId) {
     const i = text => inline(text,panelId,block.id);

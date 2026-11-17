@@ -506,6 +506,7 @@ export function validateExplainerDiagramTarget(diagrams, target, { sourceMap, so
   if (!diagram) fail(context, 'diagram-reference', 'The reference names an unknown diagram block.', '{diagram:"request",node:"api"}');
   const nodes = new Set(diagram.semantic.nodes.map(node => node.id)), edges = diagram.semantic.edges;
   if (target.node !== undefined && !nodes.has(target.node)) fail(context, 'diagram-node-reference', 'The reference names a node absent from the native diagram.', `{diagram:"${target.diagram}",node:"${diagram.semantic.nodes[0]?.id || 'api'}"}`);
+  if (target.nodes !== undefined && (!Array.isArray(target.nodes) || !target.nodes.length || target.nodes.some(id => !nodes.has(id)))) fail(context, 'diagram-node-reference', 'The reference names a node absent from the native diagram.', `{diagram:"${target.diagram}",nodes:["${diagram.semantic.nodes[0]?.id || 'api'}"]}`);
   if (target.edges !== undefined && (!Array.isArray(target.edges) || !target.edges.length || target.edges.some(id => !edges.some(edge => edge.id === id)))) fail(context, 'diagram-edge-reference', 'The reference names an edge absent from the native diagram.', `{diagram:"${target.diagram}",edges:["${edges[0]?.id || 'api-to-db-1'}"]}`);
   if (target.route !== undefined) {
     if (!Array.isArray(target.route) || target.route.length !== 2 || !target.route.every(id => nodes.has(id))) fail(context, 'diagram-route-reference', 'A route needs two real native node identities.', `{diagram:"${target.diagram}",route:["api","db"]}`);

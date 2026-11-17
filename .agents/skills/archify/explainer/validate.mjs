@@ -79,13 +79,15 @@ export function validateExplainer(document, {sourceMap = {}, inputPath, writingM
     const seen=new Set();for(const [i,value]of (values||[]).entries()) {reference(value,`${pointer}/${i}`,component,panelId,registry,example);if(seen.has(value))fail('duplicate-reference',`${pointer}/${i}`,component,'Each reference may occur only once.','Use each ID once.',panelId);seen.add(value);}
   }
   function diagramTarget(target,pointer,component,panelId) {
-    if (target.node !== undefined && target.route !== undefined) fail('diagram-target-exclusive',pointer,component,'A diagram target cannot select a node and a route at the same time.','{"diagram":"request-path","node":"api"} or {"diagram":"request-path","route":["api","redis"]}',panelId);
+    if ((target.node !== undefined || target.nodes !== undefined) && target.route !== undefined) fail('diagram-target-exclusive',pointer,component,'A diagram target cannot select a node and a route at the same time.','{"diagram":"request-path","node":"api"} or {"diagram":"request-path","route":["api","redis"]}',panelId);
+    if (target.node !== undefined && target.nodes !== undefined) fail('diagram-target-exclusive',pointer,component,'A diagram target cannot select both node and nodes.','Use node=api or nodes=["api","redis"].',panelId);
     reference(target.diagram,`${pointer}/diagram`,component,panelId,diagrams,'Use the ID of a diagram block, such as request-path.');
     const diagram=diagrams.get(target.diagram);if(!diagram?.block.spec)return;
     const spec=diagram.block.spec;
     const nodes=new Set((spec[NODE_KEYS[diagram.block.diagramType]]||[]).map(node=>node.id));
     const edges=spec[EDGE_KEYS[diagram.block.diagramType]]||[];
     if(target.node!==undefined&&!nodes.has(target.node))fail('diagram-node',`${pointer}/node`,component,'The node does not exist in the authored native diagram.','node=api',panelId);
+    if(target.nodes)references(target.nodes,`${pointer}/nodes`,component,panelId,new Map([...nodes].map(id=>[id,{id}])),'Use a node ID from the native diagram.');
     for(const node of target.route||[])if(!nodes.has(node))fail('diagram-route',`${pointer}/route`,component,'A route endpoint does not exist in the authored native diagram.','route=api~redis',panelId);
     if(target.edges)references(target.edges,`${pointer}/edges`,component,panelId,new Map(edges.filter(edge=>edge.id).map(edge=>[edge.id,edge])),'Use an edge ID from the native diagram.');
   }

@@ -708,8 +708,8 @@
     },
     {
       "id": "a4r",
-      "from": "docstore",
-      "to": "bl",
+      "from": "bl",
+      "to": "docstore",
       "label": "reads existing doc",
       "variant": "dashed"
     },

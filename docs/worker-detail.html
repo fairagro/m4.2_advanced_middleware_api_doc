@@ -5254,8 +5254,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
         <!-- Connection paths (before components for correct z-order) -->
         <g data-graph-role="automatic-crossover" style="--step:0">
-          <path data-graph-role="automatic-crossover-underlay" d="M 105 240 L 105 224 Q 105 216 113 216 L 283 216 Q 291 216 291 224 L 291 240" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="rabbitmq" data-edge-to="tasks" data-edge-label="ARC JSON-LD / rdi" data-edge-key="0" data-edge-id="w1" data-composition-points="105,240;105,216;291,216;291,240" data-composition-crossover="halo" data-composition-independent="true" d="M 105 240 L 105 224 Q 105 216 113 216 L 283 216 Q 291 216 291 224 L 291 240" class="a-dashed" data-animate="edge" style="--step:0" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 230 272 L 170 272" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="tasks" data-edge-to="rabbitmq" data-edge-label="consumes" data-edge-key="0" data-edge-id="w1" data-composition-points="230,272;170,272" data-composition-crossover="halo" data-composition-independent="true" d="M 230 272 L 170 272" class="a-dashed" data-animate="edge" style="--step:0" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:1">
           <path data-graph-role="automatic-crossover-underlay" d="M 305 240 L 305 148" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
@@ -5275,34 +5275,34 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
         <g data-graph-role="automatic-crossover" style="--step:5">
           <path data-graph-role="automatic-crossover-underlay" d="M 604 240 L 604 190 Q 604 182 612 182 L 720 182" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="bl" data-edge-to="arcstore" data-edge-label="ARC object" data-edge-key="5" data-edge-id="w5" data-composition-points="604,240;604,182;720,182" data-composition-crossover="halo" data-composition-independent="true" d="M 604 240 L 604 190 Q 604 182 612 182 L 720 182" class="a-emphasis" data-animate="edge" style="--step:5" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+          <path data-edge-from="bl" data-edge-to="arcstore" data-edge-label="sync_arc" data-edge-key="5" data-edge-id="w5" data-composition-points="604,240;604,182;720,182" data-composition-crossover="halo" data-composition-independent="true" d="M 604 240 L 604 190 Q 604 182 612 182 L 720 182" class="a-emphasis" data-animate="edge" style="--step:5" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:6">
           <path data-graph-role="automatic-crossover-underlay" d="M 604 304 L 604 348 Q 604 356 612 356 L 720 356" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="bl" data-edge-to="consol" data-edge-label="finalize(rdi)" data-edge-key="6" data-edge-id="w6" data-composition-points="604,304;604,356;720,356" data-composition-crossover="halo" data-composition-independent="true" d="M 604 304 L 604 348 Q 604 356 612 356 L 720 356" class="a-default" data-animate="edge" style="--step:6" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-edge-from="bl" data-edge-to="consol" data-edge-label="finalize" data-edge-key="6" data-edge-id="w6" data-composition-points="604,304;604,356;720,356" data-composition-crossover="halo" data-composition-independent="true" d="M 604 304 L 604 348 Q 604 356 612 356 L 720 356" class="a-default" data-animate="edge" style="--step:6" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:7">
           <path data-graph-role="automatic-crossover-underlay" d="M 545 304 L 545 460" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
           <path data-edge-from="bl" data-edge-to="docstore" data-edge-label="writes events" data-edge-key="7" data-edge-id="w7" data-composition-points="545,304;545,460" data-composition-crossover="halo" data-composition-independent="true" d="M 545 304 L 545 460" class="a-default" data-animate="edge" style="--step:7" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:8">
-          <path data-graph-role="automatic-crossover-underlay" d="M 634 460 L 634 390 Q 634 382 642 382 L 720 382" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="docstore" data-edge-to="consol" data-edge-label="ARC JSON-LD per RDI" data-edge-key="8" data-edge-id="w8" data-composition-points="634,460;634,382;720,382" data-composition-crossover="halo" data-composition-independent="true" d="M 634 460 L 634 390 Q 634 382 642 382 L 720 382" class="a-emphasis" data-animate="edge" style="--step:8" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 720 382 L 642 382 Q 634 382 634 390 L 634 460" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="consol" data-edge-to="docstore" data-edge-label="reads ARCs" data-edge-key="8" data-edge-id="w8" data-composition-points="720,382;634,382;634,460" data-composition-crossover="halo" data-composition-independent="true" d="M 720 382 L 642 382 Q 634 382 634 390 L 634 460" class="a-emphasis" data-animate="edge" style="--step:8" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:9">
           <path data-graph-role="automatic-crossover-underlay" d="M 844 198 L 844 248 Q 844 256 852 256 L 960 256" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="arcstore" data-edge-to="datahub" data-edge-label="ARC repo" data-edge-key="9" data-edge-id="w9" data-composition-points="844,198;844,256;960,256" data-composition-crossover="halo" data-composition-independent="true" d="M 844 198 L 844 248 Q 844 256 852 256 L 960 256" class="a-default" data-animate="edge" style="--step:9" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-edge-from="arcstore" data-edge-to="datahub" data-edge-label="writes ARC repo" data-edge-key="9" data-edge-id="w9" data-composition-points="844,198;844,256;960,256" data-composition-crossover="halo" data-composition-independent="true" d="M 844 198 L 844 248 Q 844 256 852 256 L 960 256" class="a-default" data-animate="edge" style="--step:9" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:10">
           <path data-graph-role="automatic-crossover-underlay" d="M 888 356 L 968 356 Q 976 356 976 348 L 976 300" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="consol" data-edge-to="datahub" data-edge-label="{rdi}.json" data-edge-key="10" data-edge-id="w10" data-composition-points="888,356;976,356;976,300" data-composition-crossover="halo" data-composition-independent="true" d="M 888 356 L 968 356 Q 976 356 976 348 L 976 300" class="a-default" data-animate="edge" style="--step:10" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-edge-from="consol" data-edge-to="datahub" data-edge-label="writes catalog" data-edge-key="10" data-edge-id="w10" data-composition-points="888,356;976,356;976,300" data-composition-crossover="halo" data-composition-independent="true" d="M 888 356 L 968 356 Q 976 356 976 348 L 976 300" class="a-default" data-animate="edge" style="--step:10" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
 
         <!-- Components -->
         <g id="node-rabbitmq" data-node-id="rabbitmq" data-node-label="RabbitMQ" tabindex="0" role="button" aria-label="RabbitMQ fokussieren, Broker, Architekturkomponente" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="Broker" data-node-tag="shared" data-node-context="Architekturkomponente">
           <title>RabbitMQ · Broker · Architekturkomponente · shared</title>
           <rect x="40" y="240" width="130" height="58" rx="8" class="c-mask"/>
-          <rect x="40" y="240" width="130" height="58" rx="8" class="c-messagebus" data-animate="node" style="--step:0" stroke-width="1.5"/>
+          <rect x="40" y="240" width="130" height="58" rx="8" class="c-messagebus" data-animate="node" style="--step:1" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(46 246) scale(0.6875)">
             <path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/>
             <circle cx="5" cy="4.5" r="1" class="sigil-fill"/>
@@ -5329,7 +5329,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <g id="node-tasks" data-node-id="tasks" data-node-label="Celery Tasks" tabindex="0" role="button" aria-label="Celery Tasks fokussieren, sync / finalize, Worker process" aria-pressed="false" data-node-kind="backend" data-node-sublabel="sync / finalize" data-node-context="Worker process">
           <title>Celery Tasks · sync / finalize · Worker process</title>
           <rect x="230" y="240" width="150" height="64" rx="8" class="c-mask"/>
-          <rect x="230" y="240" width="150" height="64" rx="8" class="c-backend" data-animate="node" style="--step:1" stroke-width="1.5"/>
+          <rect x="230" y="240" width="150" height="64" rx="8" class="c-backend" data-animate="node" style="--step:0" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(236 246) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
@@ -5411,13 +5411,13 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
 
         <!-- Connection labels -->
-        <g data-detail="context" data-edge-from="rabbitmq" data-edge-to="tasks" data-edge-label="ARC JSON-LD / rdi" data-edge-key="0" data-edge-id="w1">
-          <rect x="152.2" y="196" width="91.6" height="14" rx="3" class="c-mask"/>
-          <text x="198" y="206" class="t-edge-dashed" font-size="8" text-anchor="middle">ARC JSON-LD / rdi</text>
+        <g data-detail="context" data-edge-from="tasks" data-edge-to="rabbitmq" data-edge-label="consumes" data-edge-key="0" data-edge-id="w1">
+          <rect x="175.8" y="252" width="48.4" height="14" rx="3" class="c-mask"/>
+          <text x="200" y="262" class="t-edge-dashed" font-size="8" text-anchor="middle">consumes</text>
         </g>
         <g data-detail="context" data-edge-from="tasks" data-edge-to="bl-mgr" data-edge-label="gets instance" data-edge-key="1" data-edge-id="w2">
-          <rect x="226.60000000000002" y="164" width="72.4" height="14" rx="3" class="c-mask"/>
-          <text x="262.8" y="174" class="t-edge-default" font-size="8" text-anchor="middle">gets instance</text>
+          <rect x="268.8" y="220" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="305" y="230" class="t-edge-default" font-size="8" text-anchor="middle">gets instance</text>
         </g>
         <g data-detail="context" data-edge-from="bl-mgr" data-edge-to="bl" data-edge-label="provides" data-edge-key="2" data-edge-id="w2b">
           <rect x="400.27500000000003" y="196" width="48.4" height="14" rx="3" class="c-mask"/>
@@ -5431,29 +5431,29 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="413.79999999999995" y="164" width="125.19999999999999" height="14" rx="3" class="c-mask"/>
           <text x="476.4" y="174" class="t-edge-emphasis" font-size="8" text-anchor="middle">from_rocrate_json_string</text>
         </g>
-        <g data-detail="context" data-edge-from="bl" data-edge-to="arcstore" data-edge-label="ARC object" data-edge-key="5" data-edge-id="w5">
-          <rect x="633" y="162" width="58" height="14" rx="3" class="c-mask"/>
-          <text x="662" y="172" class="t-edge-emphasis" font-size="8" text-anchor="middle">ARC object</text>
+        <g data-detail="context" data-edge-from="bl" data-edge-to="arcstore" data-edge-label="sync_arc" data-edge-key="5" data-edge-id="w5">
+          <rect x="637.8" y="162" width="48.4" height="14" rx="3" class="c-mask"/>
+          <text x="662" y="172" class="t-edge-emphasis" font-size="8" text-anchor="middle">sync_arc</text>
         </g>
-        <g data-detail="context" data-edge-from="bl" data-edge-to="consol" data-edge-label="finalize(rdi)" data-edge-key="6" data-edge-id="w6">
-          <rect x="625.8" y="336" width="72.4" height="14" rx="3" class="c-mask"/>
-          <text x="662" y="346" class="t-edge-default" font-size="8" text-anchor="middle">finalize(rdi)</text>
+        <g data-detail="context" data-edge-from="bl" data-edge-to="consol" data-edge-label="finalize" data-edge-key="6" data-edge-id="w6">
+          <rect x="637.8" y="336" width="48.4" height="14" rx="3" class="c-mask"/>
+          <text x="662" y="346" class="t-edge-default" font-size="8" text-anchor="middle">finalize</text>
         </g>
         <g data-detail="context" data-edge-from="bl" data-edge-to="docstore" data-edge-label="writes events" data-edge-key="7" data-edge-id="w7">
           <rect x="466.6" y="375" width="72.4" height="14" rx="3" class="c-mask"/>
           <text x="502.8" y="385" class="t-edge-default" font-size="8" text-anchor="middle">writes events</text>
         </g>
-        <g data-detail="context" data-edge-from="docstore" data-edge-to="consol" data-edge-label="ARC JSON-LD per RDI" data-edge-key="8" data-edge-id="w8">
-          <rect x="640" y="414" width="101.2" height="14" rx="3" class="c-mask"/>
-          <text x="690.6" y="424" class="t-edge-emphasis" font-size="8" text-anchor="middle">ARC JSON-LD per RDI</text>
+        <g data-detail="context" data-edge-from="consol" data-edge-to="docstore" data-edge-label="reads ARCs" data-edge-key="8" data-edge-id="w8">
+          <rect x="605" y="401" width="58" height="14" rx="3" class="c-mask"/>
+          <text x="634" y="411" class="t-edge-emphasis" font-size="8" text-anchor="middle">reads ARCs</text>
         </g>
-        <g data-detail="context" data-edge-from="arcstore" data-edge-to="datahub" data-edge-label="ARC repo" data-edge-key="9" data-edge-id="w9">
-          <rect x="877.8" y="236" width="48.4" height="14" rx="3" class="c-mask"/>
-          <text x="902" y="246" class="t-edge-default" font-size="8" text-anchor="middle">ARC repo</text>
+        <g data-detail="context" data-edge-from="arcstore" data-edge-to="datahub" data-edge-label="writes ARC repo" data-edge-key="9" data-edge-id="w9">
+          <rect x="861" y="236" width="82" height="14" rx="3" class="c-mask"/>
+          <text x="902" y="246" class="t-edge-default" font-size="8" text-anchor="middle">writes ARC repo</text>
         </g>
-        <g data-detail="context" data-edge-from="consol" data-edge-to="datahub" data-edge-label="{rdi}.json" data-edge-key="10" data-edge-id="w10">
-          <rect x="947" y="308" width="58" height="14" rx="3" class="c-mask"/>
-          <text x="976" y="318" class="t-edge-default" font-size="8" text-anchor="middle">{rdi}.json</text>
+        <g data-detail="context" data-edge-from="consol" data-edge-to="datahub" data-edge-label="writes catalog" data-edge-key="10" data-edge-id="w10">
+          <rect x="937.4" y="308" width="77.2" height="14" rx="3" class="c-mask"/>
+          <text x="976" y="318" class="t-edge-default" font-size="8" text-anchor="middle">writes catalog</text>
         </g>
 
         <!-- Boundary labels (foreground masks keep routes out of titles) -->
