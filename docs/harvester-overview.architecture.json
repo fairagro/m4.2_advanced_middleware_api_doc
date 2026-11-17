@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Middleware Harvester — overview",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "docs/harvester-overview.html",
+    "repository": {
+      "url": "https://github.com/fairagro/m4.2_middleware_harvester.git",
+      "provider": "github",
+      "revision": "0af067d7169714a4898bc8439647b1a923e8576c"
+    },
+    "views": [
+      {
+        "id": "extract",
+        "label": "Extract",
+        "focus": ["inspire", "generic", "oai-pmh", "csw", "http-catalogs", "oai-endpoint"],
+        "note": "Plugins read RDI catalogs"
+      },
+      {
+        "id": "publish",
+        "label": "Publish",
+        "focus": ["orchestrator", "api-client", "middleware-api"],
+        "note": "Upload via ApiClient harvest_arcs"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "csw",
+      "type": "external",
+      "label": "INSPIRE CSW",
+      "sublabel": "ISO 19139 catalogs",
+      "pos": [40, 40],
+      "sources": [
+        {
+          "path": "middleware/inspire/src/middleware/inspire/csw_client.py",
+          "line": 258,
+          "end_line": 280
+        }
+      ]
+    },
+    {
+      "id": "http-catalogs",
+      "type": "external",
+      "label": "HTTP catalogs",
+      "sublabel": "DCAT · MyCoRe · Regal …",
+      "pos": [280, 40],
+      "sources": [
+        {
+          "path": "middleware/generic/src/middleware/generic/plugin.py",
+          "line": 53,
+          "end_line": 76
+        }
+      ]
+    },
+    {
+      "id": "oai-endpoint",
+      "type": "external",
+      "label": "OAI-PMH endpoint",
+      "sublabel": "ListRecords",
+      "pos": [520, 40],
+      "sources": [
+        {
+          "path": "middleware/oai_pmh/src/middleware/oai_pmh/harvest.py",
+          "line": 59,
+          "end_line": 80
+        }
+      ]
+    },
+    {
+      "id": "inspire",
+      "type": "backend",
+      "label": "INSPIRE plugin",
+      "sublabel": "CSW → mapper → ARC",
+      "tag": "Plugin",
+      "pos": [40, 180],
+      "sources": [
+        {
+          "path": "middleware/inspire/src/middleware/inspire/plugin.py",
+          "line": 56,
+          "end_line": 115
+        }
+      ]
+    },
+    {
+      "id": "generic",
+      "type": "backend",
+      "label": "Generic plugin",
+      "sublabel": "Protocol → parse → map",
+      "tag": "Plugin",
+      "pos": [280, 180],
+      "sources": [
+        {
+          "path": "middleware/generic/src/middleware/generic/plugin.py",
+          "line": 53,
+          "end_line": 76
+        },
+        {
+          "path": "middleware/generic/src/middleware/generic/plugin.py",
+          "line": 225,
+          "end_line": 240
+        }
+      ]
+    },
+    {
+      "id": "oai-pmh",
+      "type": "backend",
+      "label": "OAI-PMH plugin",
+      "sublabel": "ListRecords → parse → map",
+      "tag": "Plugin",
+      "pos": [520, 180],
+      "sources": [
+        {
+          "path": "middleware/oai_pmh/src/middleware/oai_pmh/plugin.py",
+          "line": 31,
+          "end_line": 80
+        }
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "Orchestrator",
+      "sublabel": "multi-repo gather",
+      "tag": "Core",
+      "pos": [280, 340],
+      "sources": [
+        {
+          "path": "middleware/harvester/src/middleware/harvester/orchestrator.py",
+          "line": 29,
+          "end_line": 43
+        },
+        {
+          "path": "middleware/harvester/src/middleware/harvester/orchestrator.py",
+          "line": 56,
+          "end_line": 96
+        },
+        {
+          "path": "middleware/harvester/src/middleware/harvester/orchestrator.py",
+          "line": 179,
+          "end_line": 191
+        }
+      ]
+    },
+    {
+      "id": "api-client",
+      "type": "backend",
+      "label": "ApiClient",
+      "sublabel": "fairagro-middleware-api-client",
+      "tag": "Library",
+      "pos": [280, 480],
+      "sources": [
+        {
+          "path": "middleware/harvester/src/middleware/harvester/upload.py",
+          "line": 67,
+          "end_line": 99
+        }
+      ]
+    },
+    {
+      "id": "middleware-api",
+      "type": "external",
+      "label": "Middleware API",
+      "sublabel": "v3 harvests · mTLS",
+      "pos": [280, 620],
+      "sources": [
+        {
+          "path": "middleware/harvester/src/middleware/harvester/upload.py",
+          "line": 95,
+          "end_line": 99
+        }
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Harvester process",
+      "wraps": ["inspire", "generic", "oai-pmh", "orchestrator", "api-client"]
+    },
+    {
+      "kind": "security-group",
+      "label": "mTLS client cert",
+      "wraps": ["api-client", "middleware-api"]
+    }
+  ],
+  "connections": [
+    {
+      "id": "h1",
+      "from": "inspire",
+      "to": "csw",
+      "label": "reads records"
+    },
+    {
+      "id": "h2",
+      "from": "generic",
+      "to": "http-catalogs",
+      "label": "reads catalogs"
+    },
+    {
+      "id": "h3",
+      "from": "oai-pmh",
+      "to": "oai-endpoint",
+      "label": "reads ListRecords"
+    },
+    {
+      "id": "h4",
+      "from": "orchestrator",
+      "to": "inspire",
+      "label": "run",
+      "variant": "emphasis"
+    },
+    {
+      "id": "h5",
+      "from": "orchestrator",
+      "to": "generic",
+      "label": "run",
+      "variant": "emphasis"
+    },
+    {
+      "id": "h6",
+      "from": "orchestrator",
+      "to": "oai-pmh",
+      "label": "run",
+      "variant": "emphasis"
+    },
+    {
+      "id": "h7",
+      "from": "orchestrator",
+      "to": "api-client",
+      "label": "harvest_arcs",
+      "variant": "emphasis"
+    },
+    {
+      "id": "h8",
+      "from": "api-client",
+      "to": "middleware-api",
+      "label": "HTTPS/mTLS",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Orchestration",
+      "items": [
+        "PLUGIN_FACTORIES dispatches inspire, generic, and oai_pmh per repository",
+        "Repositories run concurrently; one failure does not stop the others",
+        "Plugins yield HarvestedArc; upload stays in the harvester core"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Plugins",
+      "items": [
+        "INSPIRE: CSW GetRecords → DataMapper → ARC JSON",
+        "Generic: Protocol → PayloadParser → DataMapper",
+        "OAI-PMH: ListRecords → PayloadParser → DataMapper"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Publish",
+      "items": [
+        "ApiClient.harvest_arcs creates a harvest, streams ARCs, then completes it",
+        "api_client config (URL, mTLS paths) lives on the harvester, not on plugins"
+      ]
+    }
+  ]
+}

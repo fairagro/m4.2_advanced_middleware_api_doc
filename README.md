@@ -60,28 +60,40 @@ Different snapshots belong on **git branches**, not timestamp folders.
 
 ## Rebuild sources
 
-Sibling checkout of the middleware API: `../m4.2_advanced_middleware_api`
+Sibling checkouts (mounted into the Dev Container):
+
+| Host path | Container path | Used for |
+| --- | --- | --- |
+| `../m4.2_advanced_middleware_api` | `/workspaces/m4.2_advanced_middleware_api` | Middleware API diagrams + explainer |
+| `../m4.2_middleware_harvester` | `/workspaces/m4.2_middleware_harvester` | Harvester diagrams |
 
 ```bash
 export ARCHIFY_CHROME_NO_SANDBOX=1
 BIN=.agents/skills/archify/bin/archify.mjs
-REPO=/workspaces/m4.2_advanced_middleware_api
+API=/workspaces/m4.2_advanced_middleware_api
+HARVESTER=/workspaces/m4.2_middleware_harvester
 
 node "$BIN" finalize architecture docs/overview.architecture.json docs/overview.html \
-  --repo-root "$REPO" --quality showcase
+  --repo-root "$API" --quality showcase
 node "$BIN" finalize sequence docs/ingest.sequence.json docs/ingest-sequence.html \
-  --repo-root "$REPO" --quality showcase
+  --repo-root "$API" --quality showcase
 node "$BIN" finalize architecture docs/api-detail.architecture.json docs/api-detail.html \
-  --repo-root "$REPO" --quality showcase
+  --repo-root "$API" --quality showcase
 node "$BIN" finalize architecture docs/worker-detail.architecture.json docs/worker-detail.html \
-  --repo-root "$REPO" --quality showcase
+  --repo-root "$API" --quality showcase
 node "$BIN" finalize explainer docs/candidate.archify.md docs/index.html \
-  --repo-root "$REPO" --quality showcase
+  --repo-root "$API" --quality showcase
+node "$BIN" finalize architecture docs/harvester-overview.architecture.json docs/harvester-overview.html \
+  --repo-root "$HARVESTER" --quality showcase
+node "$BIN" finalize dataflow docs/harvester-pipeline.dataflow.json docs/harvester-pipeline.html \
+  --repo-root "$HARVESTER" --quality showcase
 ```
 
 ## Prerequisites (Dev Container)
 
 - Docker, Cursor / VS Code with Dev Containers
-- Sibling checkout: `../m4.2_advanced_middleware_api`
-  (mounted into the container)
+- Sibling checkouts next to this repo (same parent folder):
+  - `../m4.2_advanced_middleware_api`
+  - `../m4.2_middleware_harvester`
+  (both mounted into the container; see `.devcontainer/devcontainer.json`)
 - In the container: Node.js 22 + Chromium for Archify `finalize`
