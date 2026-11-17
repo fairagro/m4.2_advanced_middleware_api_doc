@@ -12,6 +12,18 @@ Published from [`docs/`](docs/) on every push/merge to `main` via
 
 **https://fairagro.github.io/m4.2_advanced_middleware_doc/**
 
+Detail diagrams (full Archify Viewer):
+
+| Diagram | URL |
+|---------|-----|
+| Explainer | https://fairagro.github.io/m4.2_advanced_middleware_doc/ |
+| System overview | https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html |
+| Harvest ingest | https://fairagro.github.io/m4.2_advanced_middleware_doc/ingest-sequence.html |
+| API process | https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html |
+| Worker process | https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html |
+
+On the explainer, narrow layouts hide the inline preview — use **Open interactive view** or the links above.
+
 Set the repository Pages source to **GitHub Actions** once (Settings → Pages).
 
 ## Canonical docs
@@ -21,6 +33,7 @@ There is **exactly one** documentation tree: [`docs/`](docs/).
 | Path | Role |
 |------|------|
 | [`docs/index.html`](docs/index.html) | Documentation entry (GitHub Pages) |
+| `docs/overview.html` / `api-detail.html` / `worker-detail.html` / `ingest-sequence.html` | Standalone interactive diagrams |
 | `docs/*.architecture.json` / `*.sequence.json` | Archify sources |
 | `docs/candidate.archify.md` | Explainer source |
 
