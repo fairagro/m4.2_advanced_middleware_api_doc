@@ -1,12 +1,13 @@
-# Middleware stores sync in CouchDB and publishes async to Datahub {#middleware}
+# Advanced Middleware docs: API, Harvester, and SQL-to-ARC {#middleware}
 
-The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to CouchDB**, and publishes **asynchronously** to Datahub. The overview shows the store ports [ArcStore](node:overview-arch.arc-store) and [ConsolidatedArcStore](node:overview-arch.consol-store) — without concrete Git implementations.
+This page is the docs hub for the FAIRagro Advanced Middleware family: **API**, **Harvester**, and **SQL-to-ARC**.
 
-- Sync path via Harvest API: `POST /v3/harvests` and `POST /v3/harvests/{id}/arcs` → CouchDB → HTTP response.[](source:submit-arc)
-- Async path: Celery syncs via ArcStore and finalizes the catalog via ConsolidatedArcStore after Harvest COMPLETED.[](source:worker-sync)[](source:bl-harvest)
-- SearchHUB is context only: no code reference in this repository.
+- Middleware API: harvest ingest writes CouchDB immediately and publishes asynchronously via Celery.[](source:submit-arc)[](source:worker-sync)
+- Harvester: catalog plugins discover, parse, and map into `HarvestedArc`, then upload RO-Crate JSON.
+- SQL-to-ARC: ISA-shaped SQL views carry the domain mapping; the converter assembles and uploads.
+- Standalone Archify viewers for every diagram are linked from the catalog below.
 
-@answer scope="main @ d7756ceb · Middleware-API only · sql_to_arc/Harvester out of scope · SearchHUB external · overview shows ports only"
+@answer scope="docs hub · API @ d7756ceb · Harvester @ 0af067d7 · SQL-to-ARC @ 6ba87ef6 · SearchHUB external context only"
 @meta locale=en quality_profile=showcase repo_url=git@github.com:fairagro/m4.2_advanced_middleware_api.git repo_revision=d7756ceb54060d999567ebfaa924c523bc0dfa3a
 @source arc-manager title="ArcManager.create_or_update_arc" path=middleware/api/src/middleware/api/business_logic/arc_manager.py lines=115:210
 @source couch-store title="CouchDB.store_arc" path=middleware/api/src/middleware/api/document_store/couchdb.py lines=293:367
@@ -26,7 +27,22 @@ The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to Couc
 @source sync-payload title="ArcSyncTask with ARC JSON-LD" path=middleware/api/src/middleware/api/business_logic/arc_manager.py lines=167:180
 @source sync-events title="Git sync events in CouchDB" path=middleware/api/src/middleware/api/business_logic/arc_manager.py lines=374:399
 
-## How does the system fit together? {#overview}
+## Which diagrams are available? {#catalog}
+
+| Diagram | Component | Full page |
+| --- | --- | --- |
+| System overview | Middleware API | [Open system overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html) |
+| Harvest ingest sequence | Middleware API | [Open harvest ingest](https://fairagro.github.io/m4.2_advanced_middleware_doc/ingest-sequence.html) |
+| API process internals | Middleware API | [Open API process](https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html) |
+| Worker process internals | Middleware API | [Open worker process](https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html) |
+| Harvester overview | Harvester | [Open Harvester overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/harvester-overview.html) |
+| Harvester pipeline | Harvester | [Open Harvester pipeline](https://fairagro.github.io/m4.2_advanced_middleware_doc/harvester-pipeline.html) |
+| SQL-to-ARC overview | SQL-to-ARC | [Open SQL-to-ARC overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/sql-to-arc-overview.html) |
+| SQL-to-ARC data flow | SQL-to-ARC | [Open SQL-to-ARC data flow](https://fairagro.github.io/m4.2_advanced_middleware_doc/sql-to-arc-pipeline.html) |
+
+This explainer embeds the four Middleware API diagrams below (Archify limit: four inline). Harvester and SQL-to-ARC open as standalone viewers from the table. Locally, the same files are under `docs/` via `./scripts/serve-docs.sh`.
+
+## How does the Middleware API fit together? {#overview}
 
 Full page: [System overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html)
 
@@ -75,3 +91,19 @@ Full page: [Worker process internals](https://fairagro.github.io/m4.2_advanced_m
 | w-doc | DocumentStore | Sync: BL writes events only; finalize: ConsolidatedArcStore reads ARC content.[](source:sync-events)[](source:consol-read) | worker-detail-arch | docstore |
 | w-stores | Store ports | ArcStore writes each ARC repo; ConsolidatedArcStore reads ARCs from CouchDB and writes the catalog. Parallel ports; finalize follows sync.[](source:arc-port)[](source:consol-read) | worker-detail-arch | arcstore,consol |
 | w-datahub | Datahub | Sink: ARC repos and catalog land in Git hosting. | worker-detail-arch | datahub |
+
+## How does the Harvester produce ARCs? {#harvester}
+
+Full pages: [Harvester overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/harvester-overview.html) · [Discover / Parse / Map](https://fairagro.github.io/m4.2_advanced_middleware_doc/harvester-pipeline.html)
+
+- Plugins (INSPIRE, generic Protocol, OAI-PMH) discover catalog records and map them to `HarvestedArc`.
+- Shared `PayloadParser` / `DataMapper` registries sit in the middle; INSPIRE bypasses the shared parser.
+- The orchestrator unwraps `HarvestedArc.arc_json` (RO-Crate JSON) and uploads via `ApiClient.harvest_arcs`.
+
+## How does SQL-to-ARC produce ARCs? {#sql-to-arc}
+
+Full pages: [SQL-to-ARC overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/sql-to-arc-overview.html) · [SQL → ARC data flow](https://fairagro.github.io/m4.2_advanced_middleware_doc/sql-to-arc-pipeline.html)
+
+- Domain mapping to ISA/ARC shape lives in the RDI SQL views, not in the converter code.
+- The converter validates and streams those views, mechanically assembles ARCtrl objects, and uploads RO-Crate JSON.
+- Same Middleware API sink as the Harvester (`harvest_arcs` under mTLS).

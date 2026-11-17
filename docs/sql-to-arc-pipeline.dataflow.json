@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "SQL-to-ARC — data flow",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "docs/sql-to-arc-pipeline.html",
+    "repository": {
+      "url": "https://github.com/fairagro/m4.2_sql_to_arc.git",
+      "provider": "github",
+      "revision": "6ba87ef60c901bbb9cf01fc27d868422e1ed151f"
+    },
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "emphasis": { "label": "Domain mapping (views)" },
+        "default": { "label": "Technical plumbing" },
+        "dashed": { "label": "Optional / scoped" }
+      }
+    },
+    "views": [
+      {
+        "id": "mapping",
+        "label": "Mapping",
+        "focus": ["views"],
+        "note": "ARC semantics live in SQL views"
+      },
+      {
+        "id": "plumbing",
+        "label": "Plumbing",
+        "focus": ["investigations", "related", "arc", "api"],
+        "note": "Stream, assemble, upload"
+      }
+    ]
+  },
+  "stages": [
+    { "label": "Views" },
+    { "label": "Rows" },
+    { "label": "Build" },
+    { "label": "Publish" }
+  ],
+  "nodes": [
+    {
+      "id": "views",
+      "type": "database",
+      "label": "RDI SQL views",
+      "sublabel": "ARC mapping lives here",
+      "tag": "mapping",
+      "stage": 0,
+      "row": 1,
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/models.py",
+          "line": 117,
+          "end_line": 240
+        }
+      ]
+    },
+    {
+      "id": "investigations",
+      "type": "backend",
+      "label": "Investigations",
+      "sublabel": "stream + validate",
+      "tag": "plumbing",
+      "stage": 1,
+      "row": 0,
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/database.py",
+          "line": 220,
+          "end_line": 250
+        },
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/pipeline.py",
+          "line": 220,
+          "end_line": 240
+        }
+      ]
+    },
+    {
+      "id": "related",
+      "type": "backend",
+      "label": "Related rows",
+      "sublabel": "Study · Assay · Contact · …",
+      "tag": "plumbing",
+      "stage": 1,
+      "row": 2,
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/pipeline.py",
+          "line": 94,
+          "end_line": 119
+        }
+      ]
+    },
+    {
+      "id": "arc",
+      "type": "backend",
+      "label": "Builder + Mapper",
+      "sublabel": "mechanical ARCtrl assemble",
+      "tag": "plumbing",
+      "stage": 2,
+      "row": 1,
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/builder.py",
+          "line": 555,
+          "end_line": 595
+        },
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/mapper.py",
+          "line": 33,
+          "end_line": 80
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "type": "external",
+      "label": "Middleware API",
+      "sublabel": "harvest upload",
+      "tag": "plumbing",
+      "stage": 3,
+      "row": 1,
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/processor.py",
+          "line": 282,
+          "end_line": 310
+        }
+      ]
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-views-inv",
+      "from": "views",
+      "to": "investigations",
+      "label": "ISA rows"
+    },
+    {
+      "id": "f-views-related",
+      "from": "views",
+      "to": "related",
+      "label": "ISA rows"
+    },
+    {
+      "id": "f-inv-arc",
+      "from": "investigations",
+      "to": "arc",
+      "label": "assemble"
+    },
+    {
+      "id": "f-related-arc",
+      "from": "related",
+      "to": "arc",
+      "label": "join"
+    },
+    {
+      "id": "f-arc-api",
+      "from": "arc",
+      "to": "api",
+      "label": "RO-Crate JSON"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Where the real mapping is",
+      "items": [
+        "The ARC/ISA semantics are produced in the RDI SQL views, not in the converter",
+        "Views already expose investigation, study, assay, contact, publication, and annotation shape",
+        "Writing or changing those views is the domain work; the converter assumes that contract"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "What the converter still does",
+      "items": [
+        "Validate view columns, stream batches, and group related rows",
+        "Builder + Mapper mechanically assembles ARCtrl objects and emits RO-Crate JSON-LD",
+        "That JSON is uploaded via harvest_arcs — plumbing, not mapping logic"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Contract",
+      "items": [
+        "Authoritative view/column contract: docs/sql_to_arc_database_views.md",
+        "The converter queries only those views, never raw RDI tables",
+        "Failed row validation or builds never enter the upload stream"
+      ]
+    }
+  ]
+}
+

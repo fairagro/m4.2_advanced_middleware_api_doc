@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "SQL-to-ARC — overview",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "docs/sql-to-arc-overview.html",
+    "repository": {
+      "url": "https://github.com/fairagro/m4.2_sql_to_arc.git",
+      "provider": "github",
+      "revision": "6ba87ef60c901bbb9cf01fc27d868422e1ed151f"
+    },
+    "views": [
+      {
+        "id": "extract",
+        "label": "Extract",
+        "focus": ["orchestrator", "database", "rdi-sql"],
+        "note": "Validate and stream SQL views"
+      },
+      {
+        "id": "build",
+        "label": "Build",
+        "focus": ["orchestrator", "process-pool", "builder"],
+        "note": "Process-pool ARC assembly"
+      },
+      {
+        "id": "publish",
+        "label": "Publish",
+        "focus": ["orchestrator", "api-client", "middleware-api"],
+        "note": "Upload via ApiClient harvest_arcs"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "rdi-sql",
+      "type": "database",
+      "label": "RDI SQL views",
+      "sublabel": "vInvestigation · vStudy · …",
+      "pos": [40, 200],
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/models.py",
+          "line": 117,
+          "end_line": 240
+        }
+      ]
+    },
+    {
+      "id": "cli",
+      "type": "frontend",
+      "label": "CLI / Entrypoint",
+      "sublabel": "python -m …main",
+      "pos": [420, 40],
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/main.py",
+          "line": 46,
+          "end_line": 119
+        }
+      ]
+    },
+    {
+      "id": "database",
+      "type": "backend",
+      "label": "Database",
+      "sublabel": "validate + async stream",
+      "tag": "Core",
+      "pos": [240, 200],
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/database.py",
+          "line": 161,
+          "end_line": 189
+        },
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/pipeline.py",
+          "line": 94,
+          "end_line": 119
+        }
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "Orchestrator",
+      "sublabel": "process_investigations",
+      "tag": "Core",
+      "pos": [420, 200],
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/processor.py",
+          "line": 358,
+          "end_line": 416
+        }
+      ]
+    },
+    {
+      "id": "process-pool",
+      "type": "backend",
+      "label": "Process pool",
+      "sublabel": "ProcessPoolHolder",
+      "tag": "Workers",
+      "pos": [600, 200],
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/process_pool.py",
+          "line": 11,
+          "end_line": 40
+        },
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/processor.py",
+          "line": 387,
+          "end_line": 403
+        }
+      ]
+    },
+    {
+      "id": "builder",
+      "type": "backend",
+      "label": "Builder + Mapper",
+      "sublabel": "ARCtrl RO-Crate JSON",
+      "tag": "Workers",
+      "pos": [600, 360],
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/builder.py",
+          "line": 555,
+          "end_line": 598
+        },
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/mapper.py",
+          "line": 33,
+          "end_line": 80
+        }
+      ]
+    },
+    {
+      "id": "api-client",
+      "type": "backend",
+      "label": "ApiClient",
+      "sublabel": "fairagro-middleware-api-client",
+      "tag": "Library",
+      "pos": [420, 360],
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/processor.py",
+          "line": 282,
+          "end_line": 317
+        }
+      ]
+    },
+    {
+      "id": "middleware-api",
+      "type": "external",
+      "label": "Middleware API",
+      "sublabel": "v3 harvests · mTLS",
+      "pos": [420, 520],
+      "sources": [
+        {
+          "path": "middleware/sql_to_arc/src/middleware/sql_to_arc/processor.py",
+          "line": 294,
+          "end_line": 298
+        }
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "sql_to_arc process",
+      "wraps": ["cli", "orchestrator", "database", "process-pool", "builder", "api-client"]
+    },
+    {
+      "kind": "security-group",
+      "label": "mTLS client cert",
+      "wraps": ["api-client", "middleware-api"]
+    }
+  ],
+  "connections": [
+    {
+      "id": "s1",
+      "from": "cli",
+      "to": "orchestrator",
+      "label": "run_conversion",
+      "variant": "emphasis"
+    },
+    {
+      "id": "s2",
+      "from": "orchestrator",
+      "to": "database",
+      "label": "validate + stream"
+    },
+    {
+      "id": "s3",
+      "from": "database",
+      "to": "rdi-sql",
+      "label": "reads views"
+    },
+    {
+      "id": "s4",
+      "from": "orchestrator",
+      "to": "process-pool",
+      "label": "spawn builds",
+      "variant": "emphasis"
+    },
+    {
+      "id": "s5",
+      "from": "process-pool",
+      "to": "builder",
+      "label": "build_single_arc"
+    },
+    {
+      "id": "s6",
+      "from": "orchestrator",
+      "to": "api-client",
+      "label": "harvest_arcs",
+      "variant": "emphasis"
+    },
+    {
+      "id": "s7",
+      "from": "api-client",
+      "to": "middleware-api",
+      "label": "HTTPS/mTLS",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Batch conversion",
+      "items": [
+        "Runs at the RDI: SQL views → ARC RO-Crate JSON-LD → Middleware API",
+        "process_investigations drives builds and harvest upload concurrently",
+        "HarvestReport is printed as JSON-LD on stdout when the run finishes"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "SQL contract",
+      "items": [
+        "ARC/ISA mapping is owned by the RDI SQL views; the converter is mostly plumbing",
+        "Required views: vInvestigation, vStudy, vAssay, vContact, vPublication, vAnnotationTable",
+        "SchemaValidator checks columns before streaming (Postgres, MySQL/MariaDB, Oracle, MSSQL)"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Workers + publish",
+      "items": [
+        "ProcessPoolHolder runs build_single_arc_task in spawn workers",
+        "Builder maps rows via ARCtrl and returns RO-Crate JSON strings",
+        "ApiClient.harvest_arcs streams built ARCs under mTLS"
+      ]
+    }
+  ]
+}

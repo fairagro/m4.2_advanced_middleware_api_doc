@@ -23,19 +23,19 @@
       {
         "id": "shared",
         "label": "Shared",
-        "focus": ["parser", "mapper", "yield"],
-        "note": "parsing + payload packages"
+        "focus": ["parser", "mapper", "yield", "api"],
+        "note": "parse → map → upload"
       },
       {
         "id": "generic",
         "label": "Generic",
-        "focus": ["protocol", "parser", "mapper", "yield"],
+        "focus": ["protocol", "parser", "mapper", "yield", "api"],
         "note": "Protocol ABC path"
       },
       {
         "id": "inspire",
         "label": "INSPIRE",
-        "focus": ["inspire-csw", "mapper", "yield"],
+        "focus": ["inspire-csw", "mapper", "yield", "api"],
         "note": "No Protocol / PayloadParser"
       }
     ]
@@ -44,7 +44,8 @@
     { "label": "Discover" },
     { "label": "Parse" },
     { "label": "Map" },
-    { "label": "Yield" }
+    { "label": "Yield" },
+    { "label": "Publish" }
   ],
   "nodes": [
     {
@@ -146,7 +147,7 @@
       "id": "yield",
       "type": "backend",
       "label": "Plugin yield",
-      "sublabel": "→ orchestrator upload",
+      "sublabel": "HarvestedArc DTO",
       "tag": "shared",
       "stage": 3,
       "row": 1,
@@ -160,6 +161,22 @@
           "path": "middleware/contracts/src/middleware/contracts/plugin_base.py",
           "line": 14,
           "end_line": 25
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "type": "external",
+      "label": "Middleware API",
+      "sublabel": "harvest upload",
+      "tag": "shared",
+      "stage": 4,
+      "row": 1,
+      "sources": [
+        {
+          "path": "middleware/harvester/src/middleware/harvester/upload.py",
+          "line": 55,
+          "end_line": 99
         }
       ]
     }
@@ -185,6 +202,13 @@
       "variant": "emphasis"
     },
     {
+      "id": "f-inspire-mapper",
+      "from": "inspire-csw",
+      "to": "mapper",
+      "label": "ParsedPayload",
+      "variant": "dashed"
+    },
+    {
       "id": "f-mapper-yield",
       "from": "mapper",
       "to": "yield",
@@ -192,11 +216,11 @@
       "variant": "emphasis"
     },
     {
-      "id": "f-inspire-mapper",
-      "from": "inspire-csw",
-      "to": "mapper",
-      "label": "ParsedPayload",
-      "variant": "dashed"
+      "id": "f-yield-api",
+      "from": "yield",
+      "to": "api",
+      "label": "RO-Crate JSON",
+      "variant": "emphasis"
     }
   ],
   "cards": [
@@ -220,12 +244,14 @@
     },
     {
       "dot": "amber",
-      "title": "DataMapper registry (shared)",
+      "title": "Map and publish",
       "items": [
-        "schema_org_general · regal_general · ckanext_dcat · inspire_general · phenoroam_general · mods_general",
-        "map() returns HarvestedArc; Plugin.run yields it to the orchestrator",
-        "Mappers must not discover or fetch catalogs"
+        "DataMapper.map() returns HarvestedArc (DTO with arc_json, counts, ids)",
+        "Upload unwraps HarvestedArc.arc_json and streams that RO-Crate JSON to the API",
+        "DataMapper registry: schema_org_general · regal_general · ckanext_dcat · inspire_general · phenoroam_general · mods_general"
       ]
     }
   ]
 }
+
+

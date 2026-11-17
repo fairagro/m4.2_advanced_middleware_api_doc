@@ -6,6 +6,7 @@ echo "    Node: $(node -v)"
 echo "    npm:  $(npm -v)"
 echo "    Middleware API mount: ${MIDDLEWARE_API_ROOT:-unset}"
 echo "    Middleware Harvester mount: ${MIDDLEWARE_HARVESTER_ROOT:-unset}"
+echo "    SQL-to-ARC mount: ${SQL_TO_ARC_ROOT:-unset}"
 
 if [[ -d "${MIDDLEWARE_API_ROOT:-}" ]]; then
   echo "    Middleware API found: $(ls -d "${MIDDLEWARE_API_ROOT}")"
@@ -19,6 +20,13 @@ if [[ -d "${MIDDLEWARE_HARVESTER_ROOT:-}" ]]; then
 else
   echo "    WARNING: Middleware Harvester repo not mounted at ${MIDDLEWARE_HARVESTER_ROOT:-}"
   echo "    Expected sibling folder: ../m4.2_middleware_harvester"
+fi
+
+if [[ -d "${SQL_TO_ARC_ROOT:-}" ]]; then
+  echo "    SQL-to-ARC found: $(ls -d "${SQL_TO_ARC_ROOT}")"
+else
+  echo "    WARNING: SQL-to-ARC repo not mounted at ${SQL_TO_ARC_ROOT:-}"
+  echo "    Expected sibling folder: ../m4.2_sql_to_arc"
 fi
 
 # Chromium dependencies for Archify finalize browser-check
