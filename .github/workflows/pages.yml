@@ -1,3 +1,4 @@
+# Deploys docs/ to GitHub Pages on every push to main (including merges).
 name: Deploy GitHub Pages
 
 on:

@@ -1,5 +1,5 @@
 {
-  "name": "m4.2 advanced middleware API docs (Archify)",
+  "name": "m4.2 advanced middleware docs (Archify)",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:22-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {

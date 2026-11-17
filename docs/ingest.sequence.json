@@ -2,8 +2,8 @@
   "schema_version": 1,
   "diagram_type": "sequence",
   "meta": {
-    "title": "Harvest-Ingest: BL lebt in API- bzw. Worker-Prozess",
-    "locale": "de",
+    "title": "Harvest ingest: BL lives in the API or worker process",
+    "locale": "en",
     "translations": {
       "page.title": "{title} Diagramm",
       "diagram.description.architecture": "Ein von Archify erstelltes Architekturdiagramm.",
@@ -480,7 +480,7 @@
     {
       "id": "client",
       "type": "external",
-      "label": "RDI-Client",
+      "label": "RDI client",
       "sources": [
         {
           "path": "middleware/api_client/src/middleware/api_client/api_client.py",
@@ -493,7 +493,7 @@
       "id": "api",
       "type": "backend",
       "label": "API",
-      "sublabel": "HTTP-Schicht",
+      "sublabel": "HTTP layer",
       "sources": [
         {
           "path": "middleware/api_v3/src/middleware/api_v3/routers/harvests.py",
@@ -511,7 +511,7 @@
       "id": "bl-api",
       "type": "backend",
       "label": "BusinessLogic",
-      "sublabel": "im API-Prozess",
+      "sublabel": "in API process",
       "sources": [
         {
           "path": "middleware/api/src/middleware/api/business_logic/harvest_manager.py",
@@ -529,7 +529,7 @@
       "id": "store",
       "type": "database",
       "label": "DocumentStore",
-      "sublabel": "CouchDB · geteilt",
+      "sublabel": "CouchDB · shared",
       "sources": [
         {
           "path": "middleware/api/src/middleware/api/document_store/couchdb.py",
@@ -542,7 +542,7 @@
       "id": "broker",
       "type": "messagebus",
       "label": "RabbitMQ",
-      "sublabel": "geteilt",
+      "sublabel": "shared",
       "sources": [
         {
           "path": "middleware/api/src/middleware/api/celery_integration.py",
@@ -555,7 +555,7 @@
       "id": "worker",
       "type": "backend",
       "label": "Worker",
-      "sublabel": "Celery-Task",
+      "sublabel": "Celery task",
       "sources": [
         {
           "path": "middleware/api/src/middleware/api/worker/worker.py",
@@ -568,7 +568,7 @@
       "id": "bl-worker",
       "type": "backend",
       "label": "BusinessLogic",
-      "sublabel": "im Worker-Prozess",
+      "sublabel": "in worker process",
       "sources": [
         {
           "path": "middleware/api/src/middleware/api/business_logic/business_logic.py",
@@ -822,19 +822,19 @@
   "cards": [
     {
       "dot": "emerald",
-      "title": "Prozesse vs. Bibliothek",
+      "title": "Processes vs library",
       "items": [
-        "Zwei Prozesse: API und Worker",
-        "BusinessLogic ist Bibliothekscode in jedem Prozess — keine eigene Runtime",
-        "Geteilt zwischen den Prozessen: DocumentStore (CouchDB) und RabbitMQ"
+        "Two processes: API and Worker",
+        "BusinessLogic is library code in each process — not its own runtime",
+        "Shared across processes: DocumentStore (CouchDB) and RabbitMQ"
       ]
     },
     {
       "dot": "amber",
-      "title": "Async-Grenze",
+      "title": "Async boundary",
       "items": [
-        "API-Prozess: speichern + enqueue (ARC-JSON-LD im Task)",
-        "Worker-Prozess: ARCtrl → ArcStore; CouchDB nur für Events"
+        "API process: store + enqueue (ARC JSON-LD in the task)",
+        "Worker process: ARCtrl → ArcStore; CouchDB for events only"
       ]
     }
   ]

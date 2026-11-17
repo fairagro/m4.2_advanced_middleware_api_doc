@@ -1,42 +1,34 @@
-# m4.2 Advanced Middleware API — Dokumentation
+# m4.2 Advanced Middleware — Documentation
 
-Interaktive Architektur-Dokumentation (Archify) für
+Interactive architecture documentation (Archify) for
 [`fairagro/m4.2_advanced_middleware_api`](https://github.com/fairagro/m4.2_advanced_middleware_api).
 
-## Dokumentation
+**License:** [MIT](LICENSE)
 
-Es gibt **genau eine** kanonische Version unter [`docs/`](docs/):
+## Live site (GitHub Pages)
 
-| Datei | Rolle |
-|-------|--------|
-| [`docs/index.html`](docs/index.html) | Meeting-Explainer (GitHub Pages Einstieg) |
-| `docs/*.architecture.json` / `*.sequence.json` | Archify-Quellen |
-| `docs/candidate.archify.md` | Explainer-Quelle |
+Published from [`docs/`](docs/) on every push/merge to `main` via
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml):
 
-Unterschiedliche Stände gehören auf **Git-Branches**, nicht in Timestamp-Ordner.
+**https://fairagro.github.io/m4.2_advanced_middleware_doc/**
 
-### Lokal ansehen
+Set the repository Pages source to **GitHub Actions** once (Settings → Pages).
 
-```bash
-python3 -m http.server 8765 --bind 0.0.0.0 --directory docs
-```
+## Canonical docs
 
-Dann: http://localhost:8765/
+There is **exactly one** documentation tree: [`docs/`](docs/).
 
-### GitHub Pages
+| Path | Role |
+|------|------|
+| [`docs/index.html`](docs/index.html) | Meeting explainer (Pages entry) |
+| `docs/*.architecture.json` / `*.sequence.json` | Archify sources |
+| `docs/candidate.archify.md` | Explainer source |
 
-Nach dem ersten Push auf `main` deployt [`.github/workflows/pages.yml`](.github/workflows/pages.yml)
-den Inhalt von `docs/` nach GitHub Pages.
+Different snapshots belong on **git branches**, not timestamp folders.
 
-Erwartete URL:
-`https://fairagro.github.io/m4.2_advanced_middleware_api_doc/`
+## Rebuild sources
 
-Einmalig in den Repo-Settings unter **Pages** die Quelle **GitHub Actions** wählen
-(falls noch nicht gesetzt).
-
-## Quellen neu bauen
-
-Geschwister-Checkout der Middleware: `../m4.2_advanced_middleware_api`
+Sibling checkout of the middleware API: `../m4.2_advanced_middleware_api`
 
 ```bash
 export ARCHIFY_CHROME_NO_SANDBOX=1
@@ -55,8 +47,8 @@ node "$BIN" finalize explainer docs/candidate.archify.md docs/index.html \
   --repo-root "$REPO" --quality showcase
 ```
 
-## Voraussetzungen (Dev Container)
+## Prerequisites (Dev Container)
 
-- Docker, Cursor / VS Code mit Dev Containers
-- Geschwister-Checkout: `../m4.2_advanced_middleware_api` (wird gemountet)
-- Im Container: Node.js 22 + Chromium für Archify `finalize`
+- Docker, Cursor / VS Code with Dev Containers
+- Sibling checkout: `../m4.2_advanced_middleware_api` (mounted into the container)
+- In the container: Node.js 22 + Chromium for Archify `finalize`

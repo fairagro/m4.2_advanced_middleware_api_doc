@@ -2,8 +2,8 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "Celery Worker — Prozess-Innenleben",
-    "locale": "de",
+    "title": "Celery worker — process internals",
+    "locale": "en",
     "translations": {
       "page.title": "{title} Diagramm",
       "diagram.description.architecture": "Ein von Archify erstelltes Architekturdiagramm.",
@@ -488,11 +488,11 @@
           "docstore",
           "datahub"
         ],
-        "note": "ARC-JSON-LD aus dem Task → ARCtrl → ArcStore; CouchDB nur Events"
+        "note": "ARC JSON-LD from the task → ARCtrl → ArcStore; CouchDB for events only"
       },
       {
         "id": "catalog",
-        "label": "Katalog",
+        "label": "Catalog",
         "focus": [
           "tasks",
           "bl",
@@ -500,7 +500,7 @@
           "docstore",
           "datahub"
         ],
-        "note": "ConsolidatedArcStore liest ARCs direkt aus CouchDB"
+        "note": "ConsolidatedArcStore reads ARCs directly from CouchDB"
       }
     ]
   },
@@ -510,7 +510,7 @@
       "type": "messagebus",
       "label": "RabbitMQ",
       "sublabel": "Broker",
-      "tag": "geteilt",
+      "tag": "shared",
       "pos": [
         40,
         240
@@ -531,8 +531,8 @@
       "id": "bl-mgr",
       "type": "backend",
       "label": "BL-Manager",
-      "sublabel": "stellt BL bereit",
-      "tag": "1× Prozess",
+      "sublabel": "provides BL",
+      "tag": "1× process",
       "pos": [
         230,
         90
@@ -579,8 +579,8 @@
       "id": "arctrl",
       "type": "backend",
       "label": "ARCtrl",
-      "sublabel": "JSON-LD → ARC-Objekt",
-      "tag": "Bibliothek",
+      "sublabel": "JSON-LD → ARC object",
+      "tag": "Library",
       "pos": [
         470,
         90
@@ -602,7 +602,7 @@
       "type": "backend",
       "label": "BusinessLogic",
       "sublabel": "mode=worker",
-      "tag": "Bibliothek",
+      "tag": "Library",
       "pos": [
         470,
         240
@@ -628,7 +628,7 @@
       "id": "arcstore",
       "type": "cloud",
       "label": "ArcStore",
-      "sublabel": "Git · je ARC",
+      "sublabel": "Git · per ARC",
       "tag": "Port",
       "pos": [
         720,
@@ -655,7 +655,7 @@
       "id": "consol",
       "type": "cloud",
       "label": "ConsolidatedArcStore",
-      "sublabel": "Git · Katalog",
+      "sublabel": "Git · catalog",
       "tag": "Port",
       "pos": [
         720,
@@ -682,8 +682,8 @@
       "id": "docstore",
       "type": "database",
       "label": "DocumentStore",
-      "sublabel": "CouchDB · mit API geteilt",
-      "tag": "geteilt",
+      "sublabel": "CouchDB · shared with API",
+      "tag": "shared",
       "pos": [
         470,
         460
@@ -709,7 +709,7 @@
       "id": "datahub",
       "type": "external",
       "label": "Datahub",
-      "sublabel": "Git-Hosting",
+      "sublabel": "Git hosting",
       "pos": [
         960,
         240
@@ -730,7 +730,7 @@
   "boundaries": [
     {
       "kind": "region",
-      "label": "Worker-Prozess",
+      "label": "Worker process",
       "wraps": [
         "tasks",
         "bl-mgr",
@@ -746,20 +746,20 @@
       "id": "w1",
       "from": "rabbitmq",
       "to": "tasks",
-      "label": "ARC-JSON-LD / rdi",
+      "label": "ARC JSON-LD / rdi",
       "variant": "dashed"
     },
     {
       "id": "w2",
       "from": "tasks",
       "to": "bl-mgr",
-      "label": "holt Instanz"
+      "label": "gets instance"
     },
     {
       "id": "w2b",
       "from": "bl-mgr",
       "to": "bl",
-      "label": "stellt bereit"
+      "label": "provides"
     },
     {
       "id": "w3",
@@ -778,7 +778,7 @@
       "id": "w5",
       "from": "bl",
       "to": "arcstore",
-      "label": "ARC-Objekt",
+      "label": "ARC object",
       "variant": "emphasis"
     },
     {
@@ -791,20 +791,20 @@
       "id": "w7",
       "from": "bl",
       "to": "docstore",
-      "label": "schreibt Events"
+      "label": "writes events"
     },
     {
       "id": "w8",
       "from": "docstore",
       "to": "consol",
-      "label": "ARC-JSON-LD je RDI",
+      "label": "ARC JSON-LD per RDI",
       "variant": "emphasis"
     },
     {
       "id": "w9",
       "from": "arcstore",
       "to": "datahub",
-      "label": "ARC-Repo"
+      "label": "ARC repo"
     },
     {
       "id": "w10",
@@ -816,20 +816,20 @@
   "cards": [
     {
       "dot": "emerald",
-      "title": "Sync: ARC kommt per Nachricht",
+      "title": "Sync: ARC arrives via message",
       "items": [
-        "Die API speichert das ARC in CouchDB und schickt dasselbe JSON-LD im ArcSyncTask mit",
-        "Der Worker liest das ARC nicht aus CouchDB: ARCtrl baut daraus das ARC-Objekt für den ArcStore",
-        "In CouchDB schreibt die BL nur Events (GIT_PUSH_*)"
+        "The API stores the ARC in CouchDB and sends the same JSON-LD in the ArcSyncTask",
+        "The worker does not read the ARC from CouchDB: ARCtrl builds the ARC object for ArcStore",
+        "In CouchDB the BL writes events only (GIT_PUSH_*)"
       ]
     },
     {
       "dot": "amber",
-      "title": "Katalog: direkter CouchDB-Zugriff",
+      "title": "Catalog: direct CouchDB access",
       "items": [
-        "Die Factory gibt dem ConsolidatedArcStore den DocumentStore direkt mit",
-        "Er liest alle ARCs einer RDI selbst (iter_arc_contents_by_rdi) und hält den Finalize-Lock",
-        "Verarbeitung mit pyld, nicht ARCtrl; die BL schreibt danach nur das Harvest-Event"
+        "The factory injects DocumentStore directly into ConsolidatedArcStore",
+        "It reads all ARCs for an RDI itself (iter_arc_contents_by_rdi) and holds the finalize lock",
+        "Processing uses pyld, not ARCtrl; BL then writes only the harvest event"
       ]
     }
   ]

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "Middleware API — Prozess-Innenleben",
-    "locale": "de",
+    "title": "Middleware API — process internals",
+    "locale": "en",
     "translations": {
       "page.title": "{title} Diagramm",
       "diagram.description.architecture": "Ein von Archify erstelltes Architekturdiagramm.",
@@ -485,7 +485,7 @@
           "authz",
           "bl"
         ],
-        "note": "Request bis BusinessLogic"
+        "note": "Request through BusinessLogic"
       },
       {
         "id": "persist",
@@ -494,7 +494,7 @@
           "bl",
           "docstore"
         ],
-        "note": "liest + schreibt ARC/Metadaten"
+        "note": "reads + writes ARC/metadata"
       }
     ]
   },
@@ -502,7 +502,7 @@
     {
       "id": "client",
       "type": "external",
-      "label": "RDI-Client",
+      "label": "RDI client",
       "sublabel": "HTTPS/mTLS",
       "pos": [
         40,
@@ -573,7 +573,7 @@
       "type": "backend",
       "label": "BusinessLogic",
       "sublabel": "mode=api",
-      "tag": "Bibliothek",
+      "tag": "Library",
       "pos": [
         450,
         230
@@ -621,7 +621,7 @@
       "type": "database",
       "label": "DocumentStore",
       "sublabel": "ARC · Metadaten",
-      "tag": "geteilt",
+      "tag": "shared",
       "pos": [
         450,
         380
@@ -648,7 +648,7 @@
       "type": "messagebus",
       "label": "RabbitMQ",
       "sublabel": "Broker",
-      "tag": "geteilt",
+      "tag": "shared",
       "pos": [
         680,
         90
@@ -669,7 +669,7 @@
   "boundaries": [
     {
       "kind": "region",
-      "label": "API-Prozess",
+      "label": "API process",
       "wraps": [
         "fastapi",
         "authz",
@@ -690,27 +690,27 @@
       "id": "a2",
       "from": "fastapi",
       "to": "authz",
-      "label": "prüft"
+      "label": "checks"
     },
     {
       "id": "a3",
       "from": "fastapi",
       "to": "bl",
-      "label": "delegiert",
+      "label": "delegates",
       "variant": "emphasis"
     },
     {
       "id": "a4",
       "from": "bl",
       "to": "docstore",
-      "label": "schreibt ARC + last_seen …",
+      "label": "writes ARC + last_seen …",
       "variant": "emphasis"
     },
     {
       "id": "a4r",
       "from": "docstore",
       "to": "bl",
-      "label": "liest bestehendes Doc",
+      "label": "reads existing doc",
       "variant": "dashed"
     },
     {
@@ -730,19 +730,19 @@
   "cards": [
     {
       "dot": "emerald",
-      "title": "Im API-Prozess",
+      "title": "In the API process",
       "items": [
-        "BusinessLogic speichert RO-Crate und Metadaten (u. a. last_seen) in CouchDB",
-        "store_arc liest zuerst das bestehende Dokument (Change Detection)",
-        "Kein ArcStore-Publish hier — danach nur Enqueue an den Worker"
+        "BusinessLogic stores RO-Crate and metadata (incl. last_seen) in CouchDB",
+        "store_arc first reads the existing document (change detection)",
+        "No ArcStore publish here — then only enqueue to the worker"
       ]
     },
     {
       "dot": "amber",
-      "title": "Geteilt mit Worker",
+      "title": "Shared with the worker",
       "items": [
-        "Dieselbe CouchDB: API schreibt Inhalt/Metadaten, Worker ergänzt Sync-Events",
-        "RabbitMQ liegt außerhalb; Worker erscheint hier nicht"
+        "Same CouchDB: API writes content/metadata; worker appends sync events",
+        "RabbitMQ is outside the process; the worker does not appear here"
       ]
     }
   ]

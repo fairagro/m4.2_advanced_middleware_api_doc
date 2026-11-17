@@ -2,8 +2,8 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "Advanced Middleware — Überblick",
-    "locale": "de",
+    "title": "Advanced Middleware — overview",
+    "locale": "en",
     "translations": {
       "page.title": "{title} Diagramm",
       "diagram.description.architecture": "Ein von Archify erstelltes Architekturdiagramm.",
@@ -488,7 +488,7 @@
       },
       {
         "id": "ports",
-        "label": "Store-Ports",
+        "label": "Store ports",
         "focus": [
           "worker",
           "arc-store",
@@ -499,7 +499,7 @@
       },
       {
         "id": "consume",
-        "label": "Konsum-Kontext",
+        "label": "Consumption context",
         "focus": [
           "datahub",
           "searchhub"
@@ -512,7 +512,7 @@
     {
       "id": "rdi-client",
       "type": "external",
-      "label": "RDI-Client",
+      "label": "RDI client",
       "sublabel": "ApiClient",
       "tag": "RO-Crate",
       "pos": [
@@ -584,7 +584,7 @@
       "id": "rabbitmq",
       "type": "messagebus",
       "label": "RabbitMQ",
-      "sublabel": "Celery-Broker",
+      "sublabel": "Celery broker",
       "pos": [
         380,
         90
@@ -654,7 +654,7 @@
       "id": "consol-store",
       "type": "backend",
       "label": "ConsolidatedArcStore",
-      "sublabel": "Port · Katalog",
+      "sublabel": "Port · catalog",
       "tag": "Port",
       "pos": [
         720,
@@ -676,7 +676,7 @@
       "id": "datahub",
       "type": "external",
       "label": "Datahub GitLab",
-      "sublabel": "Git-Hosting",
+      "sublabel": "Git hosting",
       "pos": [
         960,
         250
@@ -702,8 +702,8 @@
       "id": "searchhub",
       "type": "external",
       "label": "SearchHUB",
-      "sublabel": "Kontext",
-      "tag": "nicht im Code",
+      "sublabel": "Context",
+      "tag": "not in code",
       "pos": [
         960,
         420
@@ -729,7 +729,7 @@
     },
     {
       "kind": "security-group",
-      "label": "mTLS / RDI-AuthZ",
+      "label": "mTLS / RDI AuthZ",
       "wraps": [
         "api"
       ]
@@ -747,7 +747,7 @@
       "id": "c2",
       "from": "api",
       "to": "couchdb",
-      "label": "speichern",
+      "label": "store",
       "variant": "emphasis"
     },
     {
@@ -785,45 +785,45 @@
       "id": "c8",
       "from": "consol-store",
       "to": "couchdb",
-      "label": "liest ARCs"
+      "label": "reads ARCs"
     },
     {
       "id": "c9",
       "from": "arc-store",
       "to": "datahub",
-      "label": "ARC-Repos",
+      "label": "ARC repos",
       "variant": "emphasis"
     },
     {
       "id": "c10",
       "from": "consol-store",
       "to": "datahub",
-      "label": "Katalog"
+      "label": "Catalog"
     },
     {
       "id": "c11",
       "from": "datahub",
       "to": "searchhub",
-      "label": "Kontext",
+      "label": "Context",
       "variant": "dashed"
     }
   ],
   "cards": [
     {
       "dot": "emerald",
-      "title": "Abstraktion im Überblick",
+      "title": "Abstraction in the overview",
       "items": [
-        "Nur Store-Ports: ArcStore und ConsolidatedArcStore",
-        "Konkrete Git-Implementierungen sind hier bewusst weggelassen",
-        "Publish-Ziel bleibt Datahub; SearchHUB nur Kontext"
+        "Store ports only: ArcStore and ConsolidatedArcStore",
+        "Concrete Git implementations are intentionally omitted here",
+        "Publish target remains Datahub; SearchHUB is context only"
       ]
     },
     {
       "dot": "amber",
       "title": "Viewer",
       "items": [
-        "Knoten anklicken → Passport mit Quellen",
-        "Views: Ingest / Store-Ports / Konsum-Kontext"
+        "Click a node → Passport with sources",
+        "Views: Ingest / Store ports / Consumption context"
       ]
     }
   ]
