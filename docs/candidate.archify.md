@@ -28,7 +28,7 @@ The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to Couc
 
 ## How does the system fit together? {#overview}
 
-Full page: [System overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html)
+Full page: [System overview](overview.html)
 
 @diagram architecture id=overview-arch source=overview.architecture.json title="System overview"
 
@@ -42,13 +42,12 @@ Full page: [System overview](https://fairagro.github.io/m4.2_advanced_middleware
 | s-hub | SearchHUB | External consumer context; not wired here. | overview-arch | searchhub |
 
 @callout id=viewer-tip level=note title="How to open diagrams"
-| If the page says the diagram cannot fit, use **Open interactive view** on that panel. |
-| Full-page Viewers: [overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html), [ingest](https://fairagro.github.io/m4.2_advanced_middleware_doc/ingest-sequence.html), [API](https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html), [worker](https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html). |
-| Click a node for the Semantic Passport (sources, neighbors). |
+| **Open interactive view** (or a click on a node) opens the full Archify Viewer for that diagram. |
+| Standalone pages: [overview](overview.html), [ingest](ingest-sequence.html), [API](api-detail.html), [worker](worker-detail.html). |
 
 ## What happens during harvest ingest? {#ingest-seq}
 
-Full page: [Harvest ingest sequence](https://fairagro.github.io/m4.2_advanced_middleware_doc/ingest-sequence.html)
+Full page: [Harvest ingest sequence](ingest-sequence.html)
 
 @diagram sequence id=ingest-flow source=ingest.sequence.json title="Harvest API: BusinessLogic in API vs worker process"
 
@@ -62,7 +61,7 @@ Full page: [Harvest ingest sequence](https://fairagro.github.io/m4.2_advanced_mi
 
 ## What is inside the Middleware API process? {#api-detail}
 
-Full page: [API process internals](https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html)
+Full page: [API process internals](api-detail.html)
 
 @diagram architecture id=api-detail-arch source=api-detail.architecture.json title="API process internals"
 
@@ -75,7 +74,7 @@ Full page: [API process internals](https://fairagro.github.io/m4.2_advanced_midd
 
 ## What is inside the Celery worker process? {#worker-detail}
 
-Full page: [Worker process internals](https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html)
+Full page: [Worker process internals](worker-detail.html)
 
 @diagram architecture id=worker-detail-arch source=worker-detail.architecture.json title="Worker process internals"
 
