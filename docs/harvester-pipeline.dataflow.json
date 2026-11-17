@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Harvester — Discover, Parse, Map",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "output": "docs/harvester-pipeline.html",
+    "repository": {
+      "url": "https://github.com/fairagro/m4.2_middleware_harvester.git",
+      "provider": "github",
+      "revision": "0af067d7169714a4898bc8439647b1a923e8576c"
+    },
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "emphasis": { "label": "Shared pipeline" },
+        "default": { "label": "DiscoveryResult into parser" },
+        "dashed": { "label": "Plugin-owned / INSPIRE bypass" }
+      }
+    },
+    "views": [
+      {
+        "id": "shared",
+        "label": "Shared",
+        "focus": ["parser", "mapper", "yield"],
+        "note": "parsing + payload packages"
+      },
+      {
+        "id": "generic",
+        "label": "Generic",
+        "focus": ["protocol", "parser", "mapper", "yield"],
+        "note": "Protocol ABC path"
+      },
+      {
+        "id": "inspire",
+        "label": "INSPIRE",
+        "focus": ["inspire-csw", "mapper", "yield"],
+        "note": "No Protocol / PayloadParser"
+      }
+    ]
+  },
+  "stages": [
+    { "label": "Discover" },
+    { "label": "Parse" },
+    { "label": "Map" },
+    { "label": "Yield" }
+  ],
+  "nodes": [
+    {
+      "id": "protocol",
+      "type": "backend",
+      "label": "Protocol",
+      "sublabel": "6 registered · discover()",
+      "tag": "generic",
+      "stage": 0,
+      "row": 0,
+      "sources": [
+        {
+          "path": "middleware/generic/src/middleware/generic/protocol/protocol.py",
+          "line": 39,
+          "end_line": 78
+        }
+      ]
+    },
+    {
+      "id": "oai-list",
+      "type": "backend",
+      "label": "ListRecords",
+      "sublabel": "iter_discovery_units",
+      "tag": "oai_pmh",
+      "stage": 0,
+      "row": 2,
+      "sources": [
+        {
+          "path": "middleware/oai_pmh/src/middleware/oai_pmh/harvest.py",
+          "line": 59,
+          "end_line": 99
+        }
+      ]
+    },
+    {
+      "id": "inspire-csw",
+      "type": "backend",
+      "label": "CSW + IsoParser",
+      "sublabel": "InspireRecord",
+      "tag": "inspire",
+      "stage": 0,
+      "row": 4,
+      "sources": [
+        {
+          "path": "middleware/inspire/src/middleware/inspire/csw_client.py",
+          "line": 258,
+          "end_line": 280
+        },
+        {
+          "path": "middleware/inspire/src/middleware/inspire/iso_parser.py",
+          "line": 24,
+          "end_line": 40
+        },
+        {
+          "path": "middleware/inspire/src/middleware/inspire/plugin.py",
+          "line": 80,
+          "end_line": 99
+        }
+      ]
+    },
+    {
+      "id": "parser",
+      "type": "backend",
+      "label": "PayloadParser",
+      "sublabel": "5 registered · parse()",
+      "tag": "shared",
+      "stage": 1,
+      "row": 1,
+      "sources": [
+        {
+          "path": "middleware/parsing/src/middleware/parsing/parser/parser.py",
+          "line": 19,
+          "end_line": 37
+        },
+        {
+          "path": "middleware/parsing/src/middleware/parsing/discovery.py",
+          "line": 8,
+          "end_line": 67
+        }
+      ]
+    },
+    {
+      "id": "mapper",
+      "type": "backend",
+      "label": "DataMapper",
+      "sublabel": "6 registered · map()",
+      "tag": "shared",
+      "stage": 2,
+      "row": 1,
+      "sources": [
+        {
+          "path": "middleware/payload/src/middleware/payload/data_mapper.py",
+          "line": 18,
+          "end_line": 83
+        }
+      ]
+    },
+    {
+      "id": "yield",
+      "type": "backend",
+      "label": "Plugin yield",
+      "sublabel": "→ orchestrator upload",
+      "tag": "shared",
+      "stage": 3,
+      "row": 1,
+      "sources": [
+        {
+          "path": "middleware/payload/src/middleware/payload/harvested_arc.py",
+          "line": 14,
+          "end_line": 38
+        },
+        {
+          "path": "middleware/contracts/src/middleware/contracts/plugin_base.py",
+          "line": 14,
+          "end_line": 25
+        }
+      ]
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-protocol-parser",
+      "from": "protocol",
+      "to": "parser",
+      "label": "DiscoveryResult"
+    },
+    {
+      "id": "f-oai-parser",
+      "from": "oai-list",
+      "to": "parser",
+      "label": "XmlDiscoveryResult"
+    },
+    {
+      "id": "f-parser-mapper",
+      "from": "parser",
+      "to": "mapper",
+      "label": "ParsedPayload",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-mapper-yield",
+      "from": "mapper",
+      "to": "yield",
+      "label": "HarvestedArc",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-inspire-mapper",
+      "from": "inspire-csw",
+      "to": "mapper",
+      "label": "ParsedPayload",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Protocol registry (generic only)",
+      "items": [
+        "xml · mycore_solr · mycore_rest · dcat_ap · pubplant_json_array · regal_find",
+        "OAI-PMH ListRecords and INSPIRE CSW are outside this ABC",
+        "Generic and OAI hand DiscoveryResult / XmlDiscoveryResult to PayloadParser"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "PayloadParser registry (shared)",
+      "items": [
+        "html_jsonld · jsonld · rdf_xml · mods_xml · phenoroam_xml",
+        "DiscoveryResult types live beside parsers in middleware.parsing",
+        "INSPIRE IsoParser is plugin-local and is not a PayloadParser"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "DataMapper registry (shared)",
+      "items": [
+        "schema_org_general · regal_general · ckanext_dcat · inspire_general · phenoroam_general · mods_general",
+        "map() returns HarvestedArc; Plugin.run yields it to the orchestrator",
+        "Mappers must not discover or fetch catalogs"
+      ]
+    }
+  ]
+}

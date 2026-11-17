@@ -10,3 +10,5 @@ docs/review-*/
 *.log
 .env
 .env.*
+.repos/
+.archify/

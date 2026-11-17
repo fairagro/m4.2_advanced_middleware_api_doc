@@ -12,11 +12,13 @@
     }
   },
   "mounts": [
-    "source=${localWorkspaceFolder}/../m4.2_advanced_middleware_api,target=/workspaces/m4.2_advanced_middleware_api,type=bind,consistency=cached"
+    "source=${localWorkspaceFolder}/../m4.2_advanced_middleware_api,target=/workspaces/m4.2_advanced_middleware_api,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/../m4.2_middleware_harvester,target=/workspaces/m4.2_middleware_harvester,type=bind,consistency=cached"
   ],
   "containerEnv": {
     "ARCHIFY_UPDATE_CHECK_DISABLED": "1",
-    "MIDDLEWARE_API_ROOT": "/workspaces/m4.2_advanced_middleware_api"
+    "MIDDLEWARE_API_ROOT": "/workspaces/m4.2_advanced_middleware_api",
+    "MIDDLEWARE_HARVESTER_ROOT": "/workspaces/m4.2_middleware_harvester"
   },
   "customizations": {
     "vscode": {
