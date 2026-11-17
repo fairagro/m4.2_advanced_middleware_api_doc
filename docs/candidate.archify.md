@@ -28,6 +28,8 @@ The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to Couc
 
 ## How does the system fit together? {#overview}
 
+Full page: [System overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html)
+
 @diagram architecture id=overview-arch source=overview.architecture.json title="System overview"
 
 @steps id=overview-steps
@@ -39,11 +41,14 @@ The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to Couc
 | s-consol | ConsolidatedArcStore | Port for catalog finalize.[](source:consol-port) | overview-arch | consol-store |
 | s-hub | SearchHUB | External consumer context; not wired here. | overview-arch | searchhub |
 
-@callout id=viewer-tip level=note title="More detail in the diagram"
-| Click a node to open the Semantic Passport (sources, neighbors, deep link). |
-| Views: Ingest / Store ports / Consumption context. Question mark opens the guide. |
+@callout id=viewer-tip level=note title="How to open diagrams"
+| If the page says the diagram cannot fit, use **Open interactive view** on that panel. |
+| Full-page Viewers: [overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html), [ingest](https://fairagro.github.io/m4.2_advanced_middleware_doc/ingest-sequence.html), [API](https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html), [worker](https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html). |
+| Click a node for the Semantic Passport (sources, neighbors). |
 
 ## What happens during harvest ingest? {#ingest-seq}
+
+Full page: [Harvest ingest sequence](https://fairagro.github.io/m4.2_advanced_middleware_doc/ingest-sequence.html)
 
 @diagram sequence id=ingest-flow source=ingest.sequence.json title="Harvest API: BusinessLogic in API vs worker process"
 
@@ -57,6 +62,8 @@ The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to Couc
 
 ## What is inside the Middleware API process? {#api-detail}
 
+Full page: [API process internals](https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html)
+
 @diagram architecture id=api-detail-arch source=api-detail.architecture.json title="API process internals"
 
 @steps id=api-detail-steps
@@ -67,6 +74,8 @@ The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to Couc
 | a-disp | TaskDispatcher | Enqueue to RabbitMQ.[](source:worker-sync) | api-detail-arch | dispatcher |
 
 ## What is inside the Celery worker process? {#worker-detail}
+
+Full page: [Worker process internals](https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html)
 
 @diagram architecture id=worker-detail-arch source=worker-detail.architecture.json title="Worker process internals"
 
