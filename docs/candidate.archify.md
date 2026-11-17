@@ -78,10 +78,3 @@ The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to Couc
 | w-arc | ArcStore | Writes the ARC object as a Git repo to Datahub.[](source:arc-port) | worker-detail-arch | arcstore |
 | w-consol | ConsolidatedArcStore | Reads an RDI’s ARCs directly from CouchDB, not via BL.[](source:consol-read) | worker-detail-arch | consol |
 | w-doc | DocumentStore | Sync writes events only; finalize reads ARC content.[](source:sync-events) | worker-detail-arch | docstore |
-
-## Configuration checklist {#checklist}
-
-- [ ] Is `consolidated_store` configured (ConsolidatedArcStore active)?
-- [ ] Downstream consumers: `{rdi}.json` catalog, per-ARC repos, or both?
-- [ ] Which RDI IDs and certificate ODIs are the AuthZ source of truth?[](source:authz)
-- [ ] Which failure modes (Git down, catalog unchanged, empty harvest) are acceptable?
