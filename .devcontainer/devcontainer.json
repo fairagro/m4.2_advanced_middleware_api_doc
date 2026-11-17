@@ -28,11 +28,18 @@
       ],
       "settings": {
         "files.eol": "\n",
-        "editor.formatOnSave": true
+        "editor.formatOnSave": true,
+        "json.schemaDownload.enable": true
       }
     }
   },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
-  "forwardPorts": [],
+  "forwardPorts": [8888],
+  "portsAttributes": {
+    "8888": {
+      "label": "Docs preview",
+      "onAutoForward": "notify"
+    }
+  },
   "remoteUser": "node"
 }

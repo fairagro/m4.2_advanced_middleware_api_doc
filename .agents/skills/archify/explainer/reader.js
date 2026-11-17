@@ -314,7 +314,9 @@
     let requestedEdges = []; try { requestedEdges = JSON.parse(opener.dataset.diagramEdges || '[]'); } catch {}
     requestedEdges = requestedEdges.filter(id=>(diagram.semantic?.edges || []).some(edge=>edge.id === id));
     const selectedEdges = (diagram.semantic?.edges || []).filter(edge=>requestedEdges.includes(edge.id));
-    const requestedNodes = [...new Set(hash.startsWith('focus=') ? [decodeURIComponent(hash.slice(6))] : hash.startsWith('route=') ? hash.slice(6).split('~').map(decodeURIComponent) : selectedEdges.flatMap(edge=>[edge.from,edge.to]))];
+    let authoredNodes = []; try { authoredNodes = JSON.parse(opener.dataset.diagramNodes || '[]'); } catch {}
+    authoredNodes = authoredNodes.filter(id=>(diagram.semantic?.nodes || []).some(node=>node.id === id));
+    const requestedNodes = [...new Set(hash.startsWith('focus=') ? [decodeURIComponent(hash.slice(6))] : hash.startsWith('route=') ? hash.slice(6).split('~').map(decodeURIComponent) : authoredNodes.length ? authoredNodes : selectedEdges.flatMap(edge=>[edge.from,edge.to]))];
     viewerOpener = opener;
     byId('diagram-dialog-title').textContent = byId(id).querySelector('.diagram-title').textContent;
     viewerDialog.showModal(); document.body.classList.add('dialog-open');
@@ -329,8 +331,10 @@
       let pending=null;
       const settle=data=>requestAnimationFrame(()=>{
         if(pending!==data)return;
-        if(Array.isArray(data.edges)&&data.edges.length&&Array.isArray(data.nodes)){
-          if(window.Archify?.focus?.setMany)window.Archify.focus.setMany(data.nodes,{toggle:false,mode:'selection',updateUrl:false});
+        if(Array.isArray(data.nodes)&&data.nodes.length>1&&window.Archify?.focus?.setMany){
+          window.Archify.focus.setMany(data.nodes,{toggle:false,mode:'selection',updateUrl:false});
+        }
+        if(Array.isArray(data.edges)&&data.edges.length){
           document.querySelectorAll('[data-edge-id]').forEach(edge=>{if(data.edges.includes(edge.dataset.edgeId))edge.setAttribute('data-focus-match','');else edge.removeAttribute('data-focus-match');});
         }
         requestAnimationFrame(()=>requestAnimationFrame(()=>{
@@ -394,7 +398,9 @@
   const targetOf = link => {
     const hash = link.dataset.diagramHash || '';
     let edges = []; try { edges = JSON.parse(link.dataset.diagramEdges || '[]'); } catch {}
-    return {preview:previewOf(link.dataset.diagramLink),nodes:hash.startsWith('focus=') ? [decodeURIComponent(hash.slice(6))] : hash.startsWith('route=') ? hash.slice(6).split('~').map(decodeURIComponent) : [],edges};
+    let nodes = []; try { nodes = JSON.parse(link.dataset.diagramNodes || '[]'); } catch {}
+    if (!nodes.length) nodes = hash.startsWith('focus=') ? [decodeURIComponent(hash.slice(6))] : hash.startsWith('route=') ? hash.slice(6).split('~').map(decodeURIComponent) : [];
+    return {preview:previewOf(link.dataset.diagramLink),nodes,edges};
   };
   all('[data-diagram-link]').forEach(link=>{
     link.addEventListener('click',event=>{ event.preventDefault(); openViewer(link.dataset.diagramLink,link.dataset.diagramHash || '',link); });

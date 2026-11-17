@@ -28,7 +28,7 @@ The Advanced Middleware accepts RO-Crate ARCs, writes them **immediately to Couc
 
 ## How does the system fit together? {#overview}
 
-Full page: [System overview](overview.html)
+Full page: [System overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html)
 
 @diagram architecture id=overview-arch source=overview.architecture.json title="System overview"
 
@@ -36,53 +36,42 @@ Full page: [System overview](overview.html)
 | s-client | RDI client | Delivers RO-Crate to the API over mTLS. | overview-arch | rdi-client |
 | s-api | Middleware API | AuthZ and sync store; enqueues tasks. | overview-arch | api |
 | s-couch | CouchDB | Durable ARC and harvest documents. | overview-arch | couchdb |
+| s-rabbit | RabbitMQ | Celery broker between API enqueue and the worker. | overview-arch | rabbitmq |
 | s-worker | Celery worker | Calls the store ports. | overview-arch | worker |
-| s-arc | ArcStore | Port for per-ARC persistence.[](source:arc-port) | overview-arch | arc-store |
-| s-consol | ConsolidatedArcStore | Port for catalog finalize.[](source:consol-port) | overview-arch | consol-store |
+| s-stores | Store ports | ArcStore and ConsolidatedArcStore are two ports on the worker, wired side by side: per-ARC publish vs catalog. At runtime, finalize runs after ARC sync.[](source:arc-port)[](source:consol-port) | overview-arch | arc-store,consol-store |
+| s-datahub | Datahub | Git hosting for ARC repos and the catalog. | overview-arch | datahub |
 | s-hub | SearchHUB | External consumer context; not wired here. | overview-arch | searchhub |
-
-@callout id=viewer-tip level=note title="How to open diagrams"
-| **Open interactive view** (or a click on a node) opens the full Archify Viewer for that diagram. |
-| Standalone pages: [overview](overview.html), [ingest](ingest-sequence.html), [API](api-detail.html), [worker](worker-detail.html). |
 
 ## What happens during harvest ingest? {#ingest-seq}
 
-Full page: [Harvest ingest sequence](ingest-sequence.html)
+Full page: [Harvest ingest sequence](https://fairagro.github.io/m4.2_advanced_middleware_doc/ingest-sequence.html)
 
 @diagram sequence id=ingest-flow source=ingest.sequence.json title="Harvest API: BusinessLogic in API vs worker process"
 
-@steps id=ingest-steps
-| i-create | POST /v3/harvests | Client starts a harvest run.[](source:harvest-routes) | ingest-flow | client |
-| i-bl-api | BusinessLogic | Library code in the API process.[](source:submit-arc) | ingest-flow | bl-api |
-| i-store | DocumentStore | Shared CouchDB — persistence for both processes.[](source:couch-store) | ingest-flow | store |
-| i-enq | enqueue | API BL enqueues; the worker is a different process.[](source:worker-sync) | ingest-flow | broker |
-| i-bl-w | BusinessLogic | Library code in the worker process: publish + events. | ingest-flow | bl-worker |
-
-
 ## What is inside the Middleware API process? {#api-detail}
 
-Full page: [API process internals](api-detail.html)
+Full page: [API process internals](https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html)
 
 @diagram architecture id=api-detail-arch source=api-detail.architecture.json title="API process internals"
 
 @steps id=api-detail-steps
+| a-client | RDI client | Calls the API over mTLS with RO-Crate ARCs. | api-detail-arch | client |
 | a-http | FastAPI / Routes | Accepts harvest/ARC requests.[](source:harvest-routes) | api-detail-arch | fastapi |
-| a-auth | AuthZ | mTLS and RDI authorization.[](source:authz) | api-detail-arch | authz |
 | a-bl | BusinessLogic | mode=api: stores ARC/metadata, enqueues sync.[](source:fastapi-app) | api-detail-arch | bl |
 | a-store | DocumentStore | Reads existing doc; writes ARC + last_seen ….[](source:couch-store) | api-detail-arch | docstore |
 | a-disp | TaskDispatcher | Enqueue to RabbitMQ.[](source:worker-sync) | api-detail-arch | dispatcher |
+| a-rabbit | RabbitMQ | Broker sink of the API process: sync tasks leave here. | api-detail-arch | rabbitmq |
 
 ## What is inside the Celery worker process? {#worker-detail}
 
-Full page: [Worker process internals](worker-detail.html)
+Full page: [Worker process internals](https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html)
 
 @diagram architecture id=worker-detail-arch source=worker-detail.architecture.json title="Worker process internals"
 
 @steps id=worker-detail-steps
+| w-rabbit | RabbitMQ | Source of worker work: delivers sync and finalize tasks. | worker-detail-arch | rabbitmq |
 | w-task | Celery tasks | Entry: `sync_arc_to_gitlab` with full ARC JSON-LD, `finalize_catalog` with RDI.[](source:sync-payload) | worker-detail-arch | tasks |
-| w-mgr | BL manager | Holds and provides the one BusinessLogic instance per process.[](source:bl-manager) | worker-detail-arch | bl-mgr |
 | w-bl | BusinessLogic | Drives sync and finalize; does not read ARCs from CouchDB itself.[](source:worker-sync) | worker-detail-arch | bl |
-| w-arctrl | ARCtrl | Core of the worker: builds the ARC object from JSON-LD.[](source:arctrl-sync) | worker-detail-arch | arctrl |
-| w-arc | ArcStore | Writes the ARC object as a Git repo to Datahub.[](source:arc-port) | worker-detail-arch | arcstore |
-| w-consol | ConsolidatedArcStore | Reads an RDI’s ARCs directly from CouchDB, not via BL.[](source:consol-read) | worker-detail-arch | consol |
-| w-doc | DocumentStore | Sync writes events only; finalize reads ARC content.[](source:sync-events) | worker-detail-arch | docstore |
+| w-doc | DocumentStore | Sync: BL writes events only; finalize: ConsolidatedArcStore reads ARC content.[](source:sync-events)[](source:consol-read) | worker-detail-arch | docstore |
+| w-stores | Store ports | ArcStore writes each ARC repo; ConsolidatedArcStore reads ARCs from CouchDB and writes the catalog. Parallel ports; finalize follows sync.[](source:arc-port)[](source:consol-read) | worker-detail-arch | arcstore,consol |
+| w-datahub | Datahub | Sink: ARC repos and catalog land in Git hosting. | worker-detail-arch | datahub |

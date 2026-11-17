@@ -1,0 +1,28 @@
+{
+  "config": {
+    "MD013": {
+      "line_length": 80,
+      "code_blocks": false,
+      "tables": false
+    },
+    "MD033": false
+  },
+  "ignores": [
+    ".agents/**"
+  ],
+  "globs": [
+    "**/*.md"
+  ],
+  "overrides": [
+    {
+      "filter": ["docs/**/*.md", "docs/**/*.archify.md"],
+      "config": {
+        "MD013": false,
+        "MD034": false,
+        "MD050": false,
+        "MD033": false
+      },
+      "combine": "merge"
+    }
+  ]
+}

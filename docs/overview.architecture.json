@@ -747,7 +747,7 @@
       "id": "c2",
       "from": "api",
       "to": "couchdb",
-      "label": "store",
+      "label": "writes ARCs",
       "variant": "emphasis"
     },
     {
@@ -758,15 +758,15 @@
     },
     {
       "id": "c4",
-      "from": "rabbitmq",
-      "to": "worker",
-      "label": "AMQP"
+      "from": "worker",
+      "to": "rabbitmq",
+      "label": "consumes"
     },
     {
       "id": "c5",
       "from": "worker",
       "to": "couchdb",
-      "label": "Events"
+      "label": "writes events"
     },
     {
       "id": "c6",
@@ -791,14 +791,14 @@
       "id": "c9",
       "from": "arc-store",
       "to": "datahub",
-      "label": "ARC repos",
+      "label": "writes ARC repos",
       "variant": "emphasis"
     },
     {
       "id": "c10",
       "from": "consol-store",
       "to": "datahub",
-      "label": "Catalog"
+      "label": "writes catalog"
     },
     {
       "id": "c11",

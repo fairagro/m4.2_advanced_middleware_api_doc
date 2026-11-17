@@ -744,9 +744,9 @@
   "connections": [
     {
       "id": "w1",
-      "from": "rabbitmq",
-      "to": "tasks",
-      "label": "ARC JSON-LD / rdi",
+      "from": "tasks",
+      "to": "rabbitmq",
+      "label": "consumes",
       "variant": "dashed"
     },
     {
@@ -778,14 +778,14 @@
       "id": "w5",
       "from": "bl",
       "to": "arcstore",
-      "label": "ARC object",
+      "label": "sync_arc",
       "variant": "emphasis"
     },
     {
       "id": "w6",
       "from": "bl",
       "to": "consol",
-      "label": "finalize(rdi)"
+      "label": "finalize"
     },
     {
       "id": "w7",
@@ -795,22 +795,22 @@
     },
     {
       "id": "w8",
-      "from": "docstore",
-      "to": "consol",
-      "label": "ARC JSON-LD per RDI",
+      "from": "consol",
+      "to": "docstore",
+      "label": "reads ARCs",
       "variant": "emphasis"
     },
     {
       "id": "w9",
       "from": "arcstore",
       "to": "datahub",
-      "label": "ARC repo"
+      "label": "writes ARC repo"
     },
     {
       "id": "w10",
       "from": "consol",
       "to": "datahub",
-      "label": "{rdi}.json"
+      "label": "writes catalog"
     }
   ],
   "cards": [

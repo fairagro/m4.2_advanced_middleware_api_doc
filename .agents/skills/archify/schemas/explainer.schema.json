@@ -424,6 +424,13 @@
                   "node": {
                     "$ref": "#/$defs/id"
                   },
+                  "nodes": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/id"
+                    },
+                    "minItems": 2
+                  },
                   "route": {
                     "type": "array",
                     "prefixItems": [

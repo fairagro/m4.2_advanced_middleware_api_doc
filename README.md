@@ -1,37 +1,56 @@
 # m4.2 Advanced Middleware — Documentation
 
 Interactive architecture documentation (Archify) for
-[`fairagro/m4.2_advanced_middleware_api`](https://github.com/fairagro/m4.2_advanced_middleware_api).
+[`fairagro/m4.2_advanced_middleware_api`][api-repo].
 
 **License:** [MIT](LICENSE)
+
+[api-repo]: https://github.com/fairagro/m4.2_advanced_middleware_api
 
 ## Live site (GitHub Pages)
 
 Published from [`docs/`](docs/) on every push/merge to `main` via
 [`.github/workflows/pages.yml`](.github/workflows/pages.yml):
 
-**https://fairagro.github.io/m4.2_advanced_middleware_doc/**
+**<https://fairagro.github.io/m4.2_advanced_middleware_doc/>**
 
 Detail diagrams (full Archify Viewer):
 
 | Diagram | URL |
-|---------|-----|
-| Explainer | https://fairagro.github.io/m4.2_advanced_middleware_doc/ |
-| System overview | https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html |
-| Harvest ingest | https://fairagro.github.io/m4.2_advanced_middleware_doc/ingest-sequence.html |
-| API process | https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html |
-| Worker process | https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html |
+| --- | --- |
+| Explainer | <https://fairagro.github.io/m4.2_advanced_middleware_doc/> |
+| System overview | <https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html> |
+| Harvest ingest | <https://fairagro.github.io/m4.2_advanced_middleware_doc/ingest-sequence.html> |
+| API process | <https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html> |
+| Worker process | <https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html> |
 
-On the explainer, **Open interactive view** (and node clicks) navigate to these standalone Viewer pages — same behavior locally and on GitHub Pages.
+On the explainer, narrow layouts hide the inline preview — use
+**Open interactive view** or the links above.
 
-Set the repository Pages source to **GitHub Actions** once (Settings → Pages).
+Set the repository Pages source to **GitHub Actions** once
+(Settings → Pages).
+
+## Preview locally
+
+No deploy needed — serve the same `docs/` tree GitHub Pages uses:
+
+```bash
+./scripts/serve-docs.sh
+# optional: PORT=8765 ./scripts/serve-docs.sh
+```
+
+Then open <http://127.0.0.1:8080/> (Simple Browser or your host browser;
+port is forwarded from the Dev Container).
+
+Edit `docs/candidate.archify.md` (or diagram JSON), run the rebuild
+commands below, refresh the browser.
 
 ## Canonical docs
 
 There is **exactly one** documentation tree: [`docs/`](docs/).
 
 | Path | Role |
-|------|------|
+| --- | --- |
 | [`docs/index.html`](docs/index.html) | Documentation entry (GitHub Pages) |
 | `docs/overview.html` / `api-detail.html` / `worker-detail.html` / `ingest-sequence.html` | Standalone interactive diagrams |
 | `docs/*.architecture.json` / `*.sequence.json` | Archify sources |
@@ -58,11 +77,11 @@ node "$BIN" finalize architecture docs/worker-detail.architecture.json docs/work
   --repo-root "$REPO" --quality showcase
 node "$BIN" finalize explainer docs/candidate.archify.md docs/index.html \
   --repo-root "$REPO" --quality showcase
-node scripts/wire-standalone-viewers.mjs
 ```
 
 ## Prerequisites (Dev Container)
 
 - Docker, Cursor / VS Code with Dev Containers
-- Sibling checkout: `../m4.2_advanced_middleware_api` (mounted into the container)
+- Sibling checkout: `../m4.2_advanced_middleware_api`
+  (mounted into the container)
 - In the container: Node.js 22 + Chromium for Archify `finalize`
