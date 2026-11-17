@@ -37,14 +37,8 @@ Full page: [System overview](https://fairagro.github.io/m4.2_advanced_middleware
 | s-api | Middleware API | AuthZ and sync store; enqueues tasks. | overview-arch | api |
 | s-couch | CouchDB | Durable ARC and harvest documents. | overview-arch | couchdb |
 | s-worker | Celery worker | Calls the store ports. | overview-arch | worker |
-| s-arc | ArcStore | Port for per-ARC persistence.[](source:arc-port) | overview-arch | arc-store |
-| s-consol | ConsolidatedArcStore | Port for catalog finalize.[](source:consol-port) | overview-arch | consol-store |
+| s-stores | Store ports | ArcStore and ConsolidatedArcStore are two ports on the worker, wired side by side: per-ARC publish vs catalog. At runtime, finalize runs after ARC sync.[](source:arc-port)[](source:consol-port) | overview-arch | | | c6,c7 |
 | s-hub | SearchHUB | External consumer context; not wired here. | overview-arch | searchhub |
-
-@callout id=viewer-tip level=note title="How to open diagrams"
-| If the page says the diagram cannot fit, use **Open interactive view** on that panel. |
-| Full-page Viewers: [overview](https://fairagro.github.io/m4.2_advanced_middleware_doc/overview.html), [ingest](https://fairagro.github.io/m4.2_advanced_middleware_doc/ingest-sequence.html), [API](https://fairagro.github.io/m4.2_advanced_middleware_doc/api-detail.html), [worker](https://fairagro.github.io/m4.2_advanced_middleware_doc/worker-detail.html). |
-| Click a node for the Semantic Passport (sources, neighbors). |
 
 ## What happens during harvest ingest? {#ingest-seq}
 
@@ -58,7 +52,6 @@ Full page: [Harvest ingest sequence](https://fairagro.github.io/m4.2_advanced_mi
 | i-store | DocumentStore | Shared CouchDB — persistence for both processes.[](source:couch-store) | ingest-flow | store |
 | i-enq | enqueue | API BL enqueues; the worker is a different process.[](source:worker-sync) | ingest-flow | broker |
 | i-bl-w | BusinessLogic | Library code in the worker process: publish + events. | ingest-flow | bl-worker |
-
 
 ## What is inside the Middleware API process? {#api-detail}
 
@@ -84,6 +77,5 @@ Full page: [Worker process internals](https://fairagro.github.io/m4.2_advanced_m
 | w-mgr | BL manager | Holds and provides the one BusinessLogic instance per process.[](source:bl-manager) | worker-detail-arch | bl-mgr |
 | w-bl | BusinessLogic | Drives sync and finalize; does not read ARCs from CouchDB itself.[](source:worker-sync) | worker-detail-arch | bl |
 | w-arctrl | ARCtrl | Core of the worker: builds the ARC object from JSON-LD.[](source:arctrl-sync) | worker-detail-arch | arctrl |
-| w-arc | ArcStore | Writes the ARC object as a Git repo to Datahub.[](source:arc-port) | worker-detail-arch | arcstore |
-| w-consol | ConsolidatedArcStore | Reads an RDI’s ARCs directly from CouchDB, not via BL.[](source:consol-read) | worker-detail-arch | consol |
+| w-stores | Store ports | ArcStore writes each ARC repo; ConsolidatedArcStore reads ARCs from CouchDB and writes the catalog. Parallel ports; finalize follows sync.[](source:arc-port)[](source:consol-read) | worker-detail-arch | | | w5,w6 |
 | w-doc | DocumentStore | Sync writes events only; finalize reads ARC content.[](source:sync-events) | worker-detail-arch | docstore |
