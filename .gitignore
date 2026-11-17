@@ -1,0 +1,12 @@
+# Archify finalize / browser-check receipts (regenerated on finalize)
+docs/*.finalize.json
+docs/*.finalize-summary.json
+docs/*.browser-check.json
+docs/*.delivery.json
+docs/review-*/
+
+# Local / OS
+.DS_Store
+*.log
+.env
+.env.*

@@ -1,0 +1,38 @@
+{
+  "name": "m4.2 advanced middleware API docs (Archify)",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest",
+      "ppa": false
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "installDirectlyFromGitHubRelease": true,
+      "version": "latest"
+    }
+  },
+  "mounts": [
+    "source=${localWorkspaceFolder}/../m4.2_advanced_middleware_api,target=/workspaces/m4.2_advanced_middleware_api,type=bind,consistency=cached"
+  ],
+  "containerEnv": {
+    "ARCHIFY_UPDATE_CHECK_DISABLED": "1",
+    "MIDDLEWARE_API_ROOT": "/workspaces/m4.2_advanced_middleware_api"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "davidanson.vscode-markdownlint",
+        "mhutchie.git-graph"
+      ],
+      "settings": {
+        "files.eol": "\n",
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "forwardPorts": [],
+  "remoteUser": "node"
+}
